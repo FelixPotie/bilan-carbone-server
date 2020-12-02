@@ -1,5 +1,7 @@
 import {createConnection} from "typeorm";
+
 export let connect = async () => {
+
     const connection = await createConnection({
         "name": "default",
         "type": "postgres",
@@ -7,12 +9,12 @@ export let connect = async () => {
         "port": 5432,
         "username":"postgres",
         "password":"postgres",
-        "database": "bilan-carbone-db",
+        "database": "bilan_carbone_db",
         "synchronize": false,
         "logging": true,
         "migrationsTableName": "custom_migration_table",
         "entities": [
-            __dirname + '/models/*.js'
+            __dirname + '/models/User.model.js'
         ],
         "migrations": [
             __dirname + '/migrations/*.js'
@@ -22,4 +24,7 @@ export let connect = async () => {
             migrationsDir: __dirname + '/migrations/'
         }
     });
+    console.log(__dirname);
+    console.log(connection.entityMetadatas);
+
 };

@@ -4,11 +4,10 @@
   "description": "server side part of the bilan carbone polytech app",
   "main": "dist/index.js",
   "scripts": {
-    "prebuild": "rm -rf dist/* && tslint -c tslint.json -p    tsconfig.json --fix",
-    "build": "tsc && cp -rf package.json dist/package.json",
-    "prestart": "npm run build",
-    "start": "ts-node .",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ts-node ./src/server.ts",
+    "local": "tsc && nodemon ./dist/server.js",
+    "dev": "tsc && nodemon ./dist/server.js",
+    "prod": "tsc && nodemon ./dist/server.js",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
     "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert"
   },
