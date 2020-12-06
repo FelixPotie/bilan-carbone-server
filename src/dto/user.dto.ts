@@ -3,7 +3,7 @@ export class UserDto {
     last_name: string;
     student_number: number;
     email: string;
-    section: string;
+    department: string;
     gender: string;
     year: number;
     status: string;
