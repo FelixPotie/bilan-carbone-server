@@ -1,12 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { identity } from 'rxjs';
 import { UserDto } from '../dto/user.dto';
 import { UsersService } from '../service/users.service';
 
 
 @Controller('users')
 export class UsersController {
-    constructor(private usersService: UsersService) {}
+    constructor(private usersService: UsersService) { }
 
     @Get()
     public async getUsers() {
@@ -19,12 +18,12 @@ export class UsersController {
     }
 
     @Post()
-    public async addUser(@Body() userDto: UserDto){
+    public async addUser(@Body() userDto: UserDto) {
         return this.usersService.addUser(userDto);
     }
 
     @Put(':id')
-    public async updateUser(@Param('id') id: number, @Body() userDto: UserDto){
+    public async updateUser(@Param('id') id: number, @Body() userDto: UserDto) {
         return this.usersService.updateUser(id, userDto);
     }
 

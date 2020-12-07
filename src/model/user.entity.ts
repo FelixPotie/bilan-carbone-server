@@ -18,7 +18,7 @@ export class User {
     email: string;
 
     @Column({length: 15, nullable: true})
-    section: string;
+    department: string;
 
     @Column({length: 15, nullable: true})
     gender: string;
