@@ -1,33 +1,44 @@
-on: push
+
+on: 
+  push:
+    branches: [ main ]
+
 name: npm build, lint, test and publish
 jobs:
   build-and-publish:
     name: build and publish
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@main
+      - name: Check Out Repo 
+        uses: actions/checkout@master
+
       - name: npm install
-        uses: actions/npm@main
+        uses: actions/npm@master
         with:
           args: install
+
       - name: npm test
-        uses: actions/npm@main
+        uses: actions/npm@master
         with:
           args: run test
+
       - name: npm lint
         uses: actions/npm@mian
         with:
           args: run lint
+
       - name: docker build
-        uses: actions/docker/cli@main
+        uses: actions/docker/cli@master
         with:
-          args: build -t bilan-carbone-server/main .
+          args: build -t simongayet/bilan-carbone-server .
+
       - name: docker login
-        uses: actions/docker/login@main
+        uses: actions/docker/login@master
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          
       - name: docker push
-        uses: actions/docker/cli@main
+        uses: actions/docker/cli@master
         with:
-          args: push bilan-carbone-server/main
+          args: push simongayet/bilan-carbone-server
