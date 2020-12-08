@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, OneToMany } from 'typeorm';
+import { Mobility } from './mobility.entity';
 
 @Entity('users')
 export class User {
@@ -28,4 +29,7 @@ export class User {
 
     @Column({length: 15, nullable: true})
     status: string;
+
+    @OneToMany(() => Mobility, mobility => mobility.user)
+    mobilities: Mobility[];
 }
