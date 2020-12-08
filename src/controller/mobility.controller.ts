@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { TravelService } from '../service/travel.service';
 import { MobilityDto } from '../dto/mobility.dto';
 import { MobilityService } from '../service/mobility.service';
 
 
 @Controller('mobility')
 export class MobilityController {
-    constructor(private mobilityService: MobilityService, private travelService: TravelService) { }
+    constructor(private mobilityService: MobilityService) { }
+
     @Get()
     public async getMobilities() {
         return await this.mobilityService.getMobilities();
@@ -34,7 +34,6 @@ export class MobilityController {
 
     @Delete(':id')
     public async removeMobility(@Param('id') id: number) {
-        this.travelService.
         return this.mobilityService.removeMobility(id);
     }
 
