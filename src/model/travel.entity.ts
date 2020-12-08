@@ -6,7 +6,7 @@ export class Travel {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Mobility, mobility => mobility.travels)
+    @ManyToOne(() => Mobility, mobility => mobility.travels, {onDelete: 'CASCADE'})
     @JoinColumn()
     mobility: Mobility;
 

@@ -7,7 +7,7 @@ export class Mobility {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => User, user => user.mobilities)
+    @ManyToOne(() => User, user => user.mobilities, {onDelete: 'CASCADE'})
     @JoinColumn()
     user: User;
 
@@ -26,6 +26,6 @@ export class Mobility {
     @Column()
     end_date: Date;
 
-    @OneToMany(() => Travel, travel => travel.mobility)
+    @OneToMany(() => Travel, travel => travel.mobility, {cascade : true})
     travels: Travel[];
 }
