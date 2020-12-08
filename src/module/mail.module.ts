@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+// import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailService } from './../service/mail.service';
 import { MailController } from './../controller/mail.controller';
 
@@ -21,13 +21,13 @@ import { MailController } from './../controller/mail.controller';
         defaults: {
             from: '"mathis bourrat" <>',
         },
-        template:{
-            dir: "./templates",
-            adapter: new HandlebarsAdapter(),
-            options: {
-                strict: true,
-            },
-        }
+        // template:{
+        //     dir: "./templates",
+        //     adapter: new HandlebarsAdapter(),
+        //     options: {
+        //         strict: true,
+        //     },
+        // }
     }),
   ],
   controllers: [MailController],
