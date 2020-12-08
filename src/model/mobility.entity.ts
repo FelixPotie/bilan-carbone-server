@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Travel } from './travel.entity';
 import { User } from './user.entity';
 
 @Entity('mobilities')
@@ -25,4 +26,6 @@ export class Mobility {
     @Column()
     end_date: Date;
 
+    @OneToMany(() => Travel, travel => travel.mobility)
+    travels: Travel[];
 }
