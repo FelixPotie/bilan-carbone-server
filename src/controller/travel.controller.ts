@@ -5,36 +5,36 @@ import { TravelDto } from '../dto/travel.dto';
 
 @Controller('travel')
 export class TravelController {
-    constructor(private travelyService: TravelService) { }
+    constructor(private travelService: TravelService) { }
 
     @Get()
     public async getTravels() {
-        return await this.travelyService.getTravels();
+        return await this.travelService.getTravels();
     }
 
     @Get(':id')
     public async getTravel(@Param('id') id: number) {
-        return await this.travelyService.getTravel(id);
+        return await this.travelService.getTravel(id);
     }
 
     @Get('/mobility/:id')
     public async getTravelsByMobilities(@Param('id') id: number) {
-        return await this.travelyService.getTravelsByMobilities(id);
+        return await this.travelService.getTravelsByMobilities(id);
     }
 
     @Post()
     public async addTravel(@Body() travelDto: TravelDto) {
-        return this.travelyService.addTravel(travelDto);
+        return this.travelService.addTravel(travelDto);
     }
 
     @Put(':id')
     public async updateTravel(@Param('id') id: number, @Body() travelDto: TravelDto) {
-        return this.travelyService.updateTravel(id, travelDto);
+        return this.travelService.updateTravel(id, travelDto);
     }
 
     @Delete(':id')
     public async removeTravel(@Param('id') id: number) {
-        return this.travelyService.removeTravel(id);
+        return this.travelService.removeTravel(id);
     }
 
 }
