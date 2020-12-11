@@ -1,23 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Repository } from 'typeorm';
-import { UsersService } from './users.service';
+import { AdminService } from '../service/admin.service';
+import { AdminController } from './admin.controller';
 
-describe('UsersService', () => {
-  let service: UsersService;
+describe('UsersController', () => {
+  let controller: UsersController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      controllers: [UsersController],
       providers: [UsersService,{
         provide : 'UserRepository',
         useClass: Repository
-      }]
+      }],
     }).compile();
 
-    service = await module.resolve(UsersService);
-
+    controller = module.get<UsersController>(UsersController);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(controller).toBeDefined();
   });
 });
