@@ -1,6 +1,6 @@
 export class MobilityDto {
     id: number;
-    userId: number;
+    user_id: string;
     user_department: string;
     user_gender: string;
     type: string;
