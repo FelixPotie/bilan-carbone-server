@@ -67,4 +67,4 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd bilan_carbone
-            docker-compose up
+            docker-compose up -d
