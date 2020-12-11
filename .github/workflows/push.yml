@@ -65,4 +65,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: docker-compose up
+          script: |
+            cd bilan_carbone
+            docker-compose up
