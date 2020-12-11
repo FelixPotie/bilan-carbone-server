@@ -7,9 +7,18 @@ export class Mobility {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => User, user => user.mobilities, {onDelete: 'CASCADE'})
-    @JoinColumn()
-    user: User;
+    // @ManyToOne(() => User, user => user.mobilities, {onDelete: 'CASCADE'})
+    // @JoinColumn()
+    // user: User;
+
+    @Column({length: 255})
+    user_id: string;
+
+    @Column({length: 50})
+    user_department: string;
+
+    @Column({length: 50})
+    user_gender: string;;
 
     @Column({length: 50})
     type: string;

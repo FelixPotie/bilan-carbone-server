@@ -30,6 +30,6 @@ export class User {
     @Column({length: 15, nullable: true})
     status: string;
 
-    @OneToMany(() => Mobility, mobility => mobility.user, {cascade : true})
-    mobilities: Mobility[];
+    // @OneToMany(() => Mobility, mobility => mobility.user, {cascade : true})
+    // mobilities: Mobility[];
 }
