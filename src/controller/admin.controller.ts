@@ -1,7 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { AdminDto } from '../dto/admin.dto';
 import { AdminService } from '../service/admin.service';
 
@@ -25,17 +23,25 @@ export class AdminController {
     @UseGuards(AuthGuard('admin'))
     @Get('profile')
     public async getProfile(@Request() req) {
-        return await this.adminService.getAdmin(req.user.username);
+        return await this.adminService.getAdmin(req.user.id);
     }
 
-    // @Put(':id')
-    // public async updateUser(@Param('id') id: number, @Body() userDto: AdminDto) {
-    //     return this.adminService.updateUser(id, userDto);
-    // }
+    @UseGuards(AuthGuard('admin'))
+    @Get(':id')
+    public async getAdmin(@Param('id') id: number) {
+        return await this.adminService.getAdmin(id);
+    }
 
-    // @Delete(':id')
-    // public async removeUser(@Param('id') id: number) {
-    //     return this.adminService.removeUser(id);
-    // }
+    @UseGuards(AuthGuard('admin'))
+    @Put(':id')
+    public async updateUser(@Param('id') id: number, @Body() userDto: AdminDto) {
+        return this.adminService.updateAdmin(id, userDto);
+    }
+
+    @UseGuards(AuthGuard('admin'))
+    @Delete(':id')
+    public async removeUser(@Param('id') id: number) {
+        return this.adminService.removeAdmin(id);
+    }
 
 }

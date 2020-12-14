@@ -15,7 +15,11 @@ export class AdminService {
         return await this.adminRepository.find();
     }
 
-    public async getAdmin(username: string) {
+    public async getAdmin(id: number) {
+        return await this.adminRepository.findOne({ id: id });
+    }
+
+    public async getAdminByUsername(username: string) {
         return await this.adminRepository.findOne({ where :{username : username}});
     }
 
@@ -23,11 +27,11 @@ export class AdminService {
         return await this.adminRepository.save(adminDto);
     }
 
-    // public async updateAdmin(id: number, userDto: AdminDto) {
-    //     return await this.adminRepository.update(id, adminDto);
-    // }
+    public async updateAdmin(id: number, adminDto: AdminDto) {
+        return await this.adminRepository.update(id, adminDto);
+    }
 
-    // public async removeAdmin(id: number) {
-    //     return await this.adminRepository.delete(id);
-    // }
+    public async removeAdmin(id: number) {
+        return await this.adminRepository.delete(id);
+    }
 }
