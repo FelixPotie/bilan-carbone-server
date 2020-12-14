@@ -15,8 +15,8 @@ export class AdminService {
         return await this.adminRepository.find();
     }
 
-    public async getAdmin(email: string) {
-        return await this.adminRepository.findOne({ where :{email : email}});
+    public async getAdmin(username: string) {
+        return await this.adminRepository.findOne({ where :{username : username}});
     }
 
     public async addAdmin(adminDto: AdminDto) {

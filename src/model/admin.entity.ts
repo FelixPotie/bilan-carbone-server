@@ -4,7 +4,7 @@ import { PrimaryGeneratedColumn, Column, Entity, PrimaryColumn } from 'typeorm';
 export class Admin {
 
     @PrimaryColumn({length: 50})
-    email: string;
+    username: string;
 
     @Column({length: 255})
     password: string;

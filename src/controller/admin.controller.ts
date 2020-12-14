@@ -13,9 +13,9 @@ export class AdminController {
         return await this.adminService.getAdmins();
     }
 
-    @Get(':email')
-    public async getAdmin(@Param('email') email: string) {
-        return await this.adminService.getAdmin(email);
+    @Get(':username')
+    public async getAdmin(@Param('username') username: string) {
+        return await this.adminService.getAdmin(username);
     }
 
     @Post()
@@ -26,7 +26,6 @@ export class AdminController {
     @UseGuards(AuthGuard('local'))
     @Post('auth')
     public async login(@Request() req) {
-        console.log(req);
         return req.admin
     }
     // @Put(':id')
