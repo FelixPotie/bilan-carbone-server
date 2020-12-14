@@ -11,15 +11,15 @@ export class MobilityService {
     ) { }
 
     public async getMobilities() {
-        return await this.mobilityRepository.find({ relations: ["user"]});
+        return await this.mobilityRepository.find();
     }
 
     public async getMobility(id: number) {
         return await this.mobilityRepository.findOne({ id: id });
     }
 
-    public async getMobilitiesByUserId(userId: number) {
-        return await this.mobilityRepository.find({ where :{user : userId}});
+    public async getMobilitiesByUserId(user_id: number) {
+        return await this.mobilityRepository.find({ where :{user_id : user_id}});
     }
 
     public async addMobility(mobilityDto: MobilityDto) {
