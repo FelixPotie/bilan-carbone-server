@@ -1,15 +1,10 @@
 import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Travel } from './travel.entity';
-import { User } from './user.entity';
 
 @Entity('mobilities')
 export class Mobility {
     @PrimaryGeneratedColumn()
     id: number;
-
-    // @ManyToOne(() => User, user => user.mobilities, {onDelete: 'CASCADE'})
-    // @JoinColumn()
-    // user: User;
 
     @Column({length: 255})
     user_id: string;
