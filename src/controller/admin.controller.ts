@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Request } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { AdminDto } from '../dto/admin.dto';
 import { AdminService } from '../service/admin.service';
 
@@ -8,26 +10,24 @@ import { AdminService } from '../service/admin.service';
 export class AdminController {
     constructor(private adminService: AdminService) { }
 
+    @UseGuards(AuthGuard('admin'))
     @Get()
     public async getAdmins() {
         return await this.adminService.getAdmins();
     }
 
-    @Get(':username')
-    public async getAdmin(@Param('username') username: string) {
-        return await this.adminService.getAdmin(username);
-    }
-
+    @UseGuards(AuthGuard('admin'))
     @Post()
     public async addAdmin(@Body() adminDto: AdminDto) {
         return this.adminService.addAdmin(adminDto);
     }
 
-    @UseGuards(AuthGuard('local'))
-    @Post('auth')
-    public async login(@Request() req) {
-        return req.admin
+    @UseGuards(AuthGuard('admin'))
+    @Get('profile')
+    public async getProfile(@Request() req) {
+        return await this.adminService.getAdmin(req.user.username);
     }
+
     // @Put(':id')
     // public async updateUser(@Param('id') id: number, @Body() userDto: AdminDto) {
     //     return this.adminService.updateUser(id, userDto);
