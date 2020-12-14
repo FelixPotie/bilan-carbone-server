@@ -3,19 +3,19 @@ import { Repository } from 'typeorm';
 import { AdminService } from '../service/admin.service';
 import { AdminController } from './admin.controller';
 
-describe('UsersController', () => {
-  let controller: UsersController;
+describe('AdminController', () => {
+  let controller: AdminController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UsersController],
-      providers: [UsersService,{
-        provide : 'UserRepository',
+      controllers: [AdminController],
+      providers: [AdminService,{
+        provide : 'AdminRepository',
         useClass: Repository
       }],
     }).compile();
 
-    controller = module.get<UsersController>(UsersController);
+    controller = module.get<AdminController>(AdminController);
   });
 
   it('should be defined', () => {
