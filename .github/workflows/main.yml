@@ -40,9 +40,6 @@ jobs:
           images: symongayet/bilan-carbone-server # list of Docker images to use as base name for tags
           tag-sha: true # add git short SHA as Docker tag
       
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      
       - name: Cache Docker layers
         uses: actions/cache@v2
         with:
