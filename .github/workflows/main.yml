@@ -88,4 +88,5 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd bilan_carbone
+            docker-compose pull symongayet/bilan-carbone-server:main
             docker-compose up -d

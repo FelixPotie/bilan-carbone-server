@@ -13,6 +13,5 @@ import { AuthModule } from './module/auth.module';
     imports: [AdminModule, MobilityModule, TravelModule, StepModule, DatabaseModule, MailModule, AuthModule],
     providers: [AppService],
     controllers: [AppController],
-    //ntm
-})
+    })
 export class AppModule { }
