@@ -2,8 +2,10 @@ import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Request } f
 import { AuthGuard } from '@nestjs/passport';
 import { AdminDto } from '../dto/admin.dto';
 import { AdminService } from '../service/admin.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 
+@ApiBearerAuth()
 @Controller('admin')
 export class AdminController {
     constructor(private adminService: AdminService) { }
