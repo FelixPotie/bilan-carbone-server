@@ -4,7 +4,7 @@ import { AppService } from '../service/app.service';
 import { AdminAuthGuard } from '../auth/local-auth.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiParam, ApiProperty } from '@nestjs/swagger';
-import { AuthDto } from 'src/dto/auth.dto';
+import { AuthDto } from '../dto/auth.dto';
 
 @Controller()
 export class AppController {
