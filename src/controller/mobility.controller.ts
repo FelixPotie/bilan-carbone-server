@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Mobility } from 'src/model/mobility.entity';
 import { MobilityDto } from '../dto/mobility.dto';
 import { MobilityService } from '../service/mobility.service';
 
@@ -18,8 +19,12 @@ export class MobilityController {
     }
 
     @Get('/user/:id')
-    public async getMobilitiesByUserId(@Param('id') id: number) {
-        return await this.mobilityService.getMobilitiesByUserId(id);
+    public async getMobilitiesByUserId(@Param('id') id: string) {
+        const mobilities: Mobility[] = await this.mobilityService.getMobilitiesByUserId(id);
+        if (mobilities[0] === undefined) {
+            throw new BadRequestException('Invalid userId');
+        }
+        return mobilities;
     }
 
     @Post()
