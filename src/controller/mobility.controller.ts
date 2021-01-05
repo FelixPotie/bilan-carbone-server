@@ -21,9 +21,9 @@ export class MobilityController {
     @Get('/user/:id')
     public async getMobilitiesByUserId(@Param('id') id: string) {
         const mobilities: Mobility[] = await this.mobilityService.getMobilitiesByUserId(id);
-        if (mobilities[0] === undefined) {
-            throw new BadRequestException('Invalid userId');
-        }
+        // if (mobilities[0] === undefined) {
+        //     throw new BadRequestException('Invalid userId');
+        // }
         return mobilities;
     }
 
