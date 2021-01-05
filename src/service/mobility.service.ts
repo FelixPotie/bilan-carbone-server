@@ -18,7 +18,7 @@ export class MobilityService {
         return await this.mobilityRepository.findOne({ id: id });
     }
 
-    public async getMobilitiesByUserId(user_id: number) {
+    public async getMobilitiesByUserId(user_id: string) {
         return await this.mobilityRepository.find({ where :{user_id : user_id}});
     }
 
