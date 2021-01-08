@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common"
 import { MobilityService } from "../service/mobility.service";
 import { UserDepartmentDto } from "../dto/userDepartment.dto";
 import { UserDepartmentService } from "../service/userDepartment.service";
+import { MobilityType } from "../model/mobilityType.entity";
 
 @Controller('app/setting')
 export class AppSettingController {
@@ -13,6 +14,8 @@ export class AppSettingController {
 
     @Get()
     public async get() {
+
+        const mobilityType = Object.values(MobilityType);
         const departments = await this.userDepartmentService.getUserDepartments();
         const mobility = await this.mobilityService.getMobilities();
         
@@ -23,7 +26,8 @@ export class AppSettingController {
         const distinctYear = [...new Set(allYear)];
         const result = {
             department : departments, 
-            allYear : distinctYear
+            allYear : distinctYear,
+            mobilityType: mobilityType
         }
         return result;
     }

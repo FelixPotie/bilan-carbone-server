@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
-import { IsNotEmpty, IsString, IsEnum, IsNumber, IsDateString } from 'class-validator';
+import { MobilityType } from '../model/mobilityType.entity';
 
 import { MobilityType } from '../model/mobilityType.entity';
 
@@ -23,7 +22,7 @@ export class MobilityDto {
     type: MobilityType;
 
     @ApiProperty()
-    type: string;
+    type: MobilityType;
     @ApiProperty()
     place: string;
 
