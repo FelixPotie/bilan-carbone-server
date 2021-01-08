@@ -31,6 +31,10 @@ export class MobilityService {
         .getMany();
     }
 
+    public async getMobilitiesWithTravelAndStep() {
+        return await this.mobilityRepository.find({ relations:["travels"]});
+    }
+
     public async addMobility(mobilityDto: MobilityDto) {
         return await this.mobilityRepository.save(mobilityDto);
     }

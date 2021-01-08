@@ -16,7 +16,7 @@ export class Travel {
     
     @ManyToOne(() => Mobility, mobility => mobility.travels, {onDelete: 'CASCADE', nullable: false })
     @JoinColumn()
-    mobility!: Mobility;
+    mobilityId: number;
 
     @Column()
     date: Date;
