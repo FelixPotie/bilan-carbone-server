@@ -23,8 +23,8 @@ export class MobilityDto {
     type: MobilityType;
 
     @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
+    type: string;
+    @ApiProperty()
     place: string;
 
     @ApiProperty()

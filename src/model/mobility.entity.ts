@@ -14,13 +14,8 @@ export class Mobility {
     @ManyToOne(() => UserDepartment, userDepartment => userDepartment.mobilities, {nullable: false})
     user_department: String;
 
-    @ManyToOne(() => DepartmentType, departmentType => departmentType.mobilities, {nullable: false})
-    departmentType!: DepartmentType;
-
-    @Column({
-        type: 'enum',
-        enum: MobilityType})
-    type: MobilityType;
+    @Column({length: 50})
+    type: string;
 
     @Column({length: 255})
     place: string;
