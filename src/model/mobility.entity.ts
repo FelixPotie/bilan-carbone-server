@@ -1,7 +1,7 @@
-import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-import { MobilityType } from './mobilityType.entity';
+import { UserDepartmentDto } from 'src/dto/userDepartment.dto';
+import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Travel } from './travel.entity';
-import { DepartmentType } from './departmentType.entity';
+import { UserDepartment } from './userDepartment.entity';
 
 @Entity('mobilities')
 export class Mobility {
@@ -11,8 +11,8 @@ export class Mobility {
     @Column({length: 255})
     userId: string;
 
-    @Column()
-    departmentTypeName: string;
+    @ManyToOne(() => UserDepartment, userDepartment => userDepartment.mobilities, {nullable: false})
+    user_department: String;
 
     @ManyToOne(() => DepartmentType, departmentType => departmentType.mobilities, {nullable: false})
     departmentType!: DepartmentType;
