@@ -17,7 +17,6 @@ export class AppSettingController {
         const mobility = await this.mobilityService.getMobilities();
         
         const allYear =  mobility? mobility.map(mobility => {
-                console.log(mobility)
                 return mobility.start_date.getFullYear()
             }) : [];
 

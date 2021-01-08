@@ -15,9 +15,6 @@ export class Mobility {
     user_department: String;
 
     @Column({length: 50})
-    user_gender: string;;
-
-    @Column({length: 50})
     type: string;
 
     @Column({length: 255})

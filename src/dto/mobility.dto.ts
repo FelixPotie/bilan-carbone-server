@@ -8,8 +8,6 @@ export class MobilityDto {
     @ApiProperty()
     user_department: string;
     @ApiProperty()
-    user_gender: string;
-    @ApiProperty()
     type: string;
     @ApiProperty()
     place: string;
