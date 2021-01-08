@@ -1,7 +1,14 @@
 import { UserDepartmentDto } from 'src/dto/userDepartment.dto';
 import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { MobilityType } from './mobilityType.entity';
 import { Travel } from './travel.entity';
 import { UserDepartment } from './userDepartment.entity';
+
+// export enum MobilityType {
+//     Semester = "SEMESTER",
+//     Internship = "INTERNSHIP",
+//     Caesura = "CAESURA",
+// }
 
 @Entity('mobilities')
 export class Mobility {
@@ -14,8 +21,10 @@ export class Mobility {
     @ManyToOne(() => UserDepartment, userDepartment => userDepartment.mobilities, {nullable: false})
     user_department: String;
 
-    @Column({length: 50})
-    type: string;
+    @Column({
+        type: 'enum',
+        enum: MobilityType})
+    type: MobilityType;
 
     @Column({length: 255})
     place: string;

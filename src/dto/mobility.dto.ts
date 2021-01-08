@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { MobilityType } from '../model/mobilityType.entity';
 
 export class MobilityDto {
     @ApiProperty()
@@ -8,7 +9,7 @@ export class MobilityDto {
     @ApiProperty()
     user_department: string;
     @ApiProperty()
-    type: string;
+    type: MobilityType;
     @ApiProperty()
     place: string;
     @ApiProperty()
