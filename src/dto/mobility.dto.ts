@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, IsEnum, IsNumber, IsDateString } from 'class-validator';
+
 import { MobilityType } from '../model/mobilityType.entity';
 
 import { MobilityType } from '../model/mobilityType.entity';
@@ -9,12 +11,12 @@ export class MobilityDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    userId: string;
+    user_id: string;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    departmentTypeName: string; //Custom validator here to? 
+    user_department_name: string; //Custom validator here to? 
 
     @ApiProperty()
     @IsNotEmpty()
@@ -22,8 +24,8 @@ export class MobilityDto {
     type: MobilityType;
 
     @ApiProperty()
-    type: MobilityType;
-    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
     place: string;
 
     @ApiProperty()
@@ -34,10 +36,10 @@ export class MobilityDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsDateString()
-    startDate: Date;
+    start_date: Date;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsDateString()
-    endDate: Date;
+    end_date: Date;
 }

@@ -1,14 +1,7 @@
-import { UserDepartmentDto } from 'src/dto/userDepartment.dto';
-import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { MobilityType } from './mobilityType.entity';
 import { Travel } from './travel.entity';
-import { UserDepartment } from './userDepartment.entity';
-
-// export enum MobilityType {
-//     Semester = "SEMESTER",
-//     Internship = "INTERNSHIP",
-//     Caesura = "CAESURA",
-// }
+import { DepartmentType } from './departmentType.entity';
 
 @Entity('mobilities')
 export class Mobility {
@@ -18,8 +11,8 @@ export class Mobility {
     @Column({length: 255})
     userId: string;
 
-    @ManyToOne(() => UserDepartment, userDepartment => userDepartment.mobilities, {nullable: false})
-    user_department: String;
+    @ManyToOne(() => DepartmentType, departmentType => departmentType.mobilities, {nullable: false})
+    user_department_name: String;
 
     @Column({
         type: 'enum',
