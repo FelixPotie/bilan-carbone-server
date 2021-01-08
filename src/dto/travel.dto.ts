@@ -1,19 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
-
+import { IsNotEmpty, IsNumber, IsDateString, IsEnum } from 'class-validator';
+import { TravelType } from '../model/travel.entity'
 export class TravelDto {
+
     @ApiProperty()
-    id: number;
-    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
     mobilityId: number;
+
+    @IsNotEmpty()
     @ApiProperty()
+    @IsDateString()
     date: Date;
+
     @ApiProperty()
-    type: string;
+    @IsNotEmpty()
+    @IsEnum(TravelType)
+    type: TravelType;
     
-    
-    // departure: string;
-    // arrival: string;
-    // distance: number;
-    // means_of_transport: string;
-    // carbone_emission: number;
 }

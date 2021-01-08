@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserDepartment } from '../model/userDepartment.entity';
+import { DepartmentType } from '../model/departmentType.entity';
 import { UserDepartmentDto } from '../dto/userDepartment.dto';
 
 @Injectable()
 export class UserDepartmentService {
     constructor(
-        @InjectRepository(UserDepartment) private readonly userDepartementRepository: Repository<UserDepartment>,
+        @InjectRepository(DepartmentType) private readonly userDepartementRepository: Repository<DepartmentType>,
     ) { }
 
     public async getUserDepartments() {
