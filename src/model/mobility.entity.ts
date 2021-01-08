@@ -31,6 +31,6 @@ export class Mobility {
     @Column()
     end_date: Date;
 
-    @OneToMany(() => Travel, travel => travel.mobility, {cascade : true})
+    @OneToMany(() => Travel, travel => travel.mobilityId, {cascade : true})
     travels: Travel[];
 }
