@@ -11,9 +11,12 @@ export class Travel {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Mobility, mobility => mobility.travels, {onDelete: 'CASCADE'})
-    @JoinColumn()
+    @Column()
     mobilityId: number;
+    
+    @ManyToOne(() => Mobility, mobility => mobility.travels, {onDelete: 'CASCADE', nullable: false })
+    @JoinColumn()
+    mobility!: Mobility;
 
     @Column()
     date: Date;

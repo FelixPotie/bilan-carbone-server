@@ -6,7 +6,10 @@ export class Step {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Travel, travel => travel.steps, {onDelete: 'CASCADE'})
+    @Column()
+    travelId: number; 
+
+    @ManyToOne(() => Travel, travel => travel.steps, {onDelete: 'CASCADE', nullable: false})
     @JoinColumn()
     travel: Travel;
 
