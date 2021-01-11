@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Mobility } from '../model/mobility.entity';
 import { MobilityDto } from '../dto/mobility.dto';
-import { Travel } from '../model/travel.entity';
 
 @Injectable()
 export class MobilityService {
