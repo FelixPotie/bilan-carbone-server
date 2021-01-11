@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { JwtService } from '@nestjs/jwt';
 import * as ldap from 'ldapjs';
+import * as p4ssw0rd from 'p4ssw0rd';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,8 @@ export class AuthService {
 
     public async validateAdmin(username: string, password: string) {
         const admin = await this.adminService.getAdminByUsername(username);
-        if (admin && admin.password === password) {
+        // if (admin && admin.password === password) {
+        if (admin && p4ssw0rd.check(password, admin.password)) {
             const { password, ...result } = admin;
             return result;
         }
