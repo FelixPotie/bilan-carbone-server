@@ -29,14 +29,17 @@ export class MobilityController {
     }
 
     @Post('/export/')
-    public async getMobilitiesWithFilter(@Body() filter: MobilityFilterDTO) {
+    public async getMobilitiesWithFilter(@Body() filters: MobilityFilterDTO) {
         const mobilities: Mobility[] = await this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
-        mobilities.filter(mobility => {
-          //  filter.department_status.includes(mobility.id)
+        const filteredMobilities = mobilities.filter(mobility => {
+            return ( filters.departmentStatus.includes(mobility.departmentType.status) &&
+            filters.derpartmentTypeName.includes(mobility.departmentTypeName) &&
+            filters.mobilityType.includes(mobility.type) && 
+            filters.schoolYear.includes(mobility.year) &&
+            filters.startYear.includes(mobility.startDate.getFullYear()));
         });
-        console.log(mobilities[0]);
-        console.log(mobilities[0].travels);
-        console.log(mobilities[0].travels[0]);
+        
+        return filteredMobilities;
     }
 
     @Post()
