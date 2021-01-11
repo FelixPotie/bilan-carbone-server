@@ -18,7 +18,7 @@ export class DepartmentType {
     })
     status: DepartmentStatus
 
-    @OneToMany(() => Mobility, mobility => mobility.user_department_name)
+    @OneToMany(() => Mobility, mobility => mobility.departmentType)
     mobilities: Mobility[];
 
 }

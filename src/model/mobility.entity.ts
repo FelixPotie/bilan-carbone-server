@@ -11,8 +11,11 @@ export class Mobility {
     @Column({length: 255})
     userId: string;
 
+    @Column()
+    departmentTypeName: string;
+
     @ManyToOne(() => DepartmentType, departmentType => departmentType.mobilities, {nullable: false})
-    user_department_name: String;
+    departmentType!: DepartmentType;
 
     @Column({
         type: 'enum',

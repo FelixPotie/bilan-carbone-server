@@ -30,7 +30,10 @@ export class MobilityController {
 
     @Post('/export/')
     public async getMobilitiesWithFilter(@Body() filter: MobilityFilterDTO) {
-        const mobilities: Mobility[] = await this.mobilityService.getMobilitiesWithTravelsAndSteps();
+        const mobilities: Mobility[] = await this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
+        mobilities.filter(mobility => {
+          //  filter.department_status.includes(mobility.id)
+        });
         console.log(mobilities[0]);
         console.log(mobilities[0].travels);
         console.log(mobilities[0].travels[0]);
