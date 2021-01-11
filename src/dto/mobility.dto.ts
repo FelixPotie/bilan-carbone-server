@@ -1,22 +1,46 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
+import { IsNotEmpty, IsString, IsEnum, IsNumber, IsDateString } from 'class-validator';
+
+import { MobilityType } from '../model/mobilityType.entity';
+
+import { MobilityType } from '../model/mobilityType.entity';
 
 export class MobilityDto {
+    
+    
     @ApiProperty()
-    id: number;
+    @IsNotEmpty()
+    @IsString()
+    userId: string;
+
     @ApiProperty()
-    user_id: string;
+    @IsNotEmpty()
+    @IsString()
+    departmentTypeName: string; //Custom validator here to? 
+
     @ApiProperty()
-    user_department: string;
+    @IsNotEmpty()
+    @IsEnum(MobilityType)
+    type: MobilityType;
+
     @ApiProperty()
-    user_gender: string;
-    @ApiProperty()
-    type: string;
-    @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
     place: string;
+
     @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
     year: number;
+
     @ApiProperty()
-    start_date: Date;
+    @IsNotEmpty()
+    @IsDateString()
+    startDate: Date;
+
     @ApiProperty()
-    end_date: Date;
+    @IsNotEmpty()
+    @IsDateString()
+    endDate: Date;
 }
