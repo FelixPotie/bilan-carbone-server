@@ -44,8 +44,7 @@ export class MobilityController {
 
     @Get('/statistics/')
     public async getMobilitiesForStatistics() {
-        const mobilities: Mobility[] = await this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
-        return mobilities;
+        return this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
     }
 
     @Post()
