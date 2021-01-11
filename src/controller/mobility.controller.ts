@@ -9,10 +9,10 @@ import { MobilityService } from '../service/mobility.service';
 export class MobilityController {
     constructor(private mobilityService: MobilityService) { }
 
-    @Get()
-    public async getMobilities() {
-        return await this.mobilityService.getMobilities();
-    }
+    // @Get()
+    // public async getMobilities() {
+    //     return await this.mobilityService.getMobilities();
+    // }
 
     @Get(':id')
     public async getMobility(@Param('id') id: number) {
@@ -42,7 +42,7 @@ export class MobilityController {
         return filteredMobilities;
     }
 
-    @Get('/statistics/')
+    @Get()
     public async getMobilitiesForStatistics() {
         return this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
     }
