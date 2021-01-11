@@ -9,10 +9,13 @@ export class Mobility {
     id: number;
 
     @Column({length: 255})
-    user_id: string;
+    userId: string;
+
+    @Column()
+    departmentTypeName: string;
 
     @ManyToOne(() => DepartmentType, departmentType => departmentType.mobilities, {nullable: false})
-    user_department_name: String;
+    departmentType!: DepartmentType;
 
     @Column({
         type: 'enum',
@@ -26,10 +29,10 @@ export class Mobility {
     year: number;
 
     @Column()
-    start_date: Date;
+    startDate: Date;
 
     @Column()
-    end_date: Date;
+    endDate: Date;
 
     @OneToMany(() => Travel, travel => travel.mobility, {cascade : true})
     travels: Travel[];

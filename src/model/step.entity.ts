@@ -26,9 +26,9 @@ export class Step {
     distance: number;
 
     @Column({length: 100})
-    means_of_transport: string;
+    meansOfTransport: string;
 
     @Column()
-    carbone_emission: number;
+    carboneEmission: number;
 
 }

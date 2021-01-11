@@ -20,13 +20,14 @@ export class MobilityService {
     }
 
     public async getMobilitiesByUserId(user_id: string) {
-        return await this.mobilityRepository.find({ where :{user_id : user_id}});
+        return await this.mobilityRepository.find({ where :{userId : user_id}});
     }
 
-    public async getMobilitiesWithTravelsAndSteps() {
+    public async getMobilitiesWithTravelsStepsDepartment() {
         return await this.mobilityRepository.createQueryBuilder("mobilities")
         .leftJoinAndSelect("mobilities.travels", "travels")
         .leftJoinAndSelect("travels.steps", "steps")
+        .leftJoinAndSelect("mobilities.departmentType", "departmentType")
         .getMany();
     }
 
