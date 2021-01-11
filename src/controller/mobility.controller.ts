@@ -1,5 +1,6 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { Mobility } from 'src/model/mobility.entity';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters } from '@nestjs/common';
+import { MobilityFilterDTO } from '../dto/filter.dto';
+import { Mobility } from '../model/mobility.entity';
 import { MobilityDto } from '../dto/mobility.dto';
 import { MobilityService } from '../service/mobility.service';
 
@@ -25,6 +26,20 @@ export class MobilityController {
         //     throw new BadRequestException('Invalid userId');
         // }
         return mobilities;
+    }
+
+    @Post('/export/')
+    public async getMobilitiesWithFilter(@Body() filters: MobilityFilterDTO) {
+        const mobilities: Mobility[] = await this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
+        const filteredMobilities = mobilities.filter(mobility => {
+            return ( filters.departmentStatus.includes(mobility.departmentType.status) &&
+            filters.derpartmentTypeName.includes(mobility.departmentTypeName) &&
+            filters.mobilityType.includes(mobility.type) && 
+            filters.schoolYear.includes(mobility.year) &&
+            filters.startYear.includes(mobility.startDate.getFullYear()));
+        });
+        
+        return filteredMobilities;
     }
 
     @Post()

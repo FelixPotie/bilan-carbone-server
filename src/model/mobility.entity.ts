@@ -1,5 +1,7 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { MobilityType } from './mobilityType.entity';
 import { Travel } from './travel.entity';
+import { DepartmentType } from './departmentType.entity';
 
 @Entity('mobilities')
 export class Mobility {
@@ -7,16 +9,18 @@ export class Mobility {
     id: number;
 
     @Column({length: 255})
-    user_id: string;
+    userId: string;
 
-    @Column({length: 50})
-    user_department: string;
+    @Column()
+    departmentTypeName: string;
 
-    @Column({length: 50})
-    user_gender: string;;
+    @ManyToOne(() => DepartmentType, departmentType => departmentType.mobilities, {nullable: false})
+    departmentType!: DepartmentType;
 
-    @Column({length: 50})
-    type: string;
+    @Column({
+        type: 'enum',
+        enum: MobilityType})
+    type: MobilityType;
 
     @Column({length: 255})
     place: string;
@@ -25,10 +29,10 @@ export class Mobility {
     year: number;
 
     @Column()
-    start_date: Date;
+    startDate: Date;
 
     @Column()
-    end_date: Date;
+    endDate: Date;
 
     @OneToMany(() => Travel, travel => travel.mobility, {cascade : true})
     travels: Travel[];

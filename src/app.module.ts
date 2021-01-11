@@ -8,9 +8,10 @@ import { MobilityModule } from './module/mobility.module';
 import { TravelModule } from './module/travel.module';
 import { StepModule } from './module/step.module';
 import { AuthModule } from './module/auth.module';
+import { AppSettingModule } from './module/appSetting.module';
 
 @Module({
-    imports: [AdminModule, MobilityModule, TravelModule, StepModule, DatabaseModule, MailModule, AuthModule],
+    imports: [AdminModule, MobilityModule, TravelModule, StepModule, DatabaseModule, MailModule, AuthModule, AppSettingModule],
     providers: [AppService],
     controllers: [AppController],
     })

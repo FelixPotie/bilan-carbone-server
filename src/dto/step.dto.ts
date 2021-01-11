@@ -1,20 +1,41 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class StepDto {
+
     @ApiProperty()
-    id: number;
-    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
     travelId: number;
+
     @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
     rank: number;
+
     @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
     departure: string;
+
     @ApiProperty()
+    @IsNotEmpty()
+    @IsString()
     arrival: string;
+
     @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
     distance: number;
+
     @ApiProperty()
-    means_of_transport: string;
+    @IsNotEmpty()
+    @IsString()
+    meansOfTransport: string;
+
     @ApiProperty()
-    carbone_emission: number;
+    @IsNotEmpty()
+    @IsNumber()
+    carboneEmission: number;
 }

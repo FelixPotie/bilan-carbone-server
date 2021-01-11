@@ -2,20 +2,30 @@ import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne
 import { Mobility } from './mobility.entity';
 import { Step } from './step.entity';
 
+export enum TravelType {
+    GO = "GO",
+    BACK = "BACK"
+}
 @Entity('travels')
 export class Travel {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Mobility, mobility => mobility.travels, {onDelete: 'CASCADE'})
+    @Column()
+    mobilityId: number;
+    
+    @ManyToOne(() => Mobility, mobility => mobility.travels, {onDelete: 'CASCADE', nullable: false })
     @JoinColumn()
-    mobility: Mobility;
+    mobility!: Mobility;
 
     @Column()
     date: Date;
 
-    @Column({length: 50})
-    type: string;
+    @Column({
+        type:'enum',
+        enum: TravelType
+    })
+    type: TravelType;
 
     @OneToMany(() => Step, step => step.travel, {cascade : true})
     steps: Step[];

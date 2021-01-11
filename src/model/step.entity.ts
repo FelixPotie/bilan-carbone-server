@@ -6,7 +6,10 @@ export class Step {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => Travel, travel => travel.steps, {onDelete: 'CASCADE'})
+    @Column()
+    travelId: number; 
+
+    @ManyToOne(() => Travel, travel => travel.steps, {onDelete: 'CASCADE', nullable: false})
     @JoinColumn()
     travel: Travel;
 
@@ -23,9 +26,9 @@ export class Step {
     distance: number;
 
     @Column({length: 100})
-    means_of_transport: string;
+    meansOfTransport: string;
 
     @Column()
-    carbone_emission: number;
+    carboneEmission: number;
 
 }

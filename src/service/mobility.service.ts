@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Mobility } from '../model/mobility.entity';
 import { MobilityDto } from '../dto/mobility.dto';
+import { Travel } from '../model/travel.entity';
 
 @Injectable()
 export class MobilityService {
@@ -19,7 +20,15 @@ export class MobilityService {
     }
 
     public async getMobilitiesByUserId(user_id: string) {
-        return await this.mobilityRepository.find({ where :{user_id : user_id}});
+        return await this.mobilityRepository.find({ where :{userId : user_id}});
+    }
+
+    public async getMobilitiesWithTravelsStepsDepartment() {
+        return await this.mobilityRepository.createQueryBuilder("mobilities")
+        .leftJoinAndSelect("mobilities.travels", "travels")
+        .leftJoinAndSelect("travels.steps", "steps")
+        .leftJoinAndSelect("mobilities.departmentType", "departmentType")
+        .getMany();
     }
 
     public async addMobility(mobilityDto: MobilityDto) {
