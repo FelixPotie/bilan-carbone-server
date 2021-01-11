@@ -37,6 +37,7 @@
     "handlebars": "^4.7.6",
     "ldapjs": "^2.2.3",
     "nodemailer": "^6.4.16",
+    "p4ssw0rd": "^1.0.5",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
