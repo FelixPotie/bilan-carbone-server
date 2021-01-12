@@ -19,7 +19,7 @@ export class TravelService {
     }
 
     public async getTravelsByMobilities(mobilityId: number) {
-        return await this.travelRepository.find({ where :{mobility : mobilityId}});
+        return await this.travelRepository.find({ where :{mobilityId : mobilityId}});
     }
 
     public async addTravel(travelDto: TravelDto) {
