@@ -4,7 +4,6 @@ import { IsNotEmpty, IsString, IsEnum, IsNumber, IsDateString } from 'class-vali
 
 import { MobilityType } from '../model/mobilityType.entity';
 
-import { MobilityType } from '../model/mobilityType.entity';
 
 export class MobilityDto {
     
