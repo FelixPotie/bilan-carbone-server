@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsEnum, IsNumber, IsDateString } from 'class-validator';
+
 import { MobilityType } from '../model/mobilityType.entity';
+
 
 export class MobilityDto {
     
