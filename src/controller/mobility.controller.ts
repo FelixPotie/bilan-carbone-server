@@ -29,14 +29,15 @@ export class MobilityController {
     public async getMobilitiesWithFilter(@Body() filters: MobilityFilterDTO) {
         const mobilities: Mobility[] = await this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
         const filteredMobilities = mobilities.filter(mobility => {
+            const startDate = new Date(filters.startDate);
+            const endDate = new Date(filters.endDate);
             return ( filters.departmentStatus.includes(mobility.departmentType.status) &&
             filters.derpartmentTypeName.includes(mobility.departmentTypeName) &&
             filters.mobilityType.includes(mobility.type) && 
             filters.schoolYear.includes(mobility.year) &&
-            filters.startDate <= mobility.startDate &&
-            filters.endDate >= mobility.endDate );
+            startDate <= mobility.startDate &&
+            endDate >= mobility.startDate );
         });
-        
         return filteredMobilities;
     }
 
