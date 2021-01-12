@@ -14,5 +14,5 @@ import { AppSettingModule } from './module/appSetting.module';
     imports: [AdminModule, MobilityModule, TravelModule, StepModule, DatabaseModule, MailModule, AuthModule, AppSettingModule],
     providers: [AppService],
     controllers: [AppController],
-})
+    })
 export class AppModule { }
