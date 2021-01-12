@@ -33,7 +33,8 @@ export class MobilityController {
             filters.derpartmentTypeName.includes(mobility.departmentTypeName) &&
             filters.mobilityType.includes(mobility.type) && 
             filters.schoolYear.includes(mobility.year) &&
-            filters.startYear.includes(mobility.startDate.getFullYear()));
+            filters.startDate <= mobility.startDate &&
+            filters.endDate >= mobility.endDate );
         });
         
         return filteredMobilities;
