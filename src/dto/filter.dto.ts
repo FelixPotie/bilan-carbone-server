@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString, IsEnum, IsArray, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, IsEnum, IsArray, IsNumber, IsDateString } from 'class-validator';
 import { MobilityType } from '../model/mobilityType.entity';
 import { DepartmentType } from '../model/departmentType.entity';
 import { DepartmentStatus } from '../model/departmentType.entity';
@@ -24,8 +24,13 @@ export class MobilityFilterDTO {
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsNumber({},{each:true})
-    startYear: number[];
+    @IsDateString()
+    startDate: Date;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsDateString()
+    endDate: Date;
     
     @ApiProperty()
     @IsNotEmpty()
