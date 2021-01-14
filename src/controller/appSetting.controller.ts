@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { MobilityService } from "../service/mobility.service";
 import { UserDepartmentDto } from "../dto/userDepartment.dto";
 import { UserDepartmentService } from "../service/userDepartment.service";
 import { MobilityType } from "../model/mobilityType.entity";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller('app/setting')
 export class AppSettingController {
@@ -32,20 +33,22 @@ export class AppSettingController {
         return result;
     }
 
+    @UseGuards(AuthGuard('admin'))
     @Post()
     public async addUserDepartment(@Body() userDepartmentDto: UserDepartmentDto) {
         return this.userDepartmentService.addUserDepartment(userDepartmentDto);
     }
 
+    @UseGuards(AuthGuard('admin'))
     @Put(':id')
     public async updateMobility(@Param('id') id: string, @Body() userDepartmentDto: UserDepartmentDto) {
         return this.userDepartmentService.updateUserDepartment(id, userDepartmentDto);
     }
 
+    @UseGuards(AuthGuard('admin'))
     @Delete(':id')
     public async removeMobility(@Param('id') id: string) {
         return this.userDepartmentService.removeUserDepartment(id);
     }
-
 
 }
