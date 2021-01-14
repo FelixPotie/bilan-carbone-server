@@ -1,30 +1,29 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters, UseGuards } from '@nestjs/common';
 import { MobilityFilterDTO } from '../dto/filter.dto';
 import { Mobility } from '../model/mobility.entity';
 import { MobilityDto } from '../dto/mobility.dto';
 import { MobilityService } from '../service/mobility.service';
+import { AuthGuard } from '@nestjs/passport';
 
 
 @Controller('mobility')
 export class MobilityController {
     constructor(private mobilityService: MobilityService) { }
 
-    // @Get()
-    // public async getMobilities() {
-    //     return await this.mobilityService.getMobilities();
-    // }
-
+    @UseGuards(AuthGuard('user'))
     @Get(':id')
     public async getMobility(@Param('id') id: number) {
         return await this.mobilityService.getMobility(id);
     }
 
+    @UseGuards(AuthGuard('user'))
     @Get('/user/:id')
     public async getMobilitiesByUserId(@Param('id') id: string) {
         const mobilities: Mobility[] = await this.mobilityService.getMobilitiesByUserId(id);
         return mobilities;
     }
 
+    @UseGuards(AuthGuard('admin'))
     @Post('/export/')
     public async getMobilitiesWithFilter(@Body() filters: MobilityFilterDTO) {
         const mobilities: Mobility[] = await this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
@@ -46,16 +45,19 @@ export class MobilityController {
         return this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
     }
 
+    @UseGuards(AuthGuard('user'))
     @Post()
     public async addMobility(@Body() mobilityDto: MobilityDto) {
         return this.mobilityService.addMobility(mobilityDto);
     }
 
+    @UseGuards(AuthGuard('user'))
     @Put(':id')
     public async updateMobility(@Param('id') id: number, @Body() mobilityDto: MobilityDto) {
         return this.mobilityService.updateMobility(id, mobilityDto);
     }
 
+    @UseGuards(AuthGuard('user'))
     @Delete(':id')
     public async removeMobility(@Param('id') id: number) {
         return this.mobilityService.removeMobility(id);
