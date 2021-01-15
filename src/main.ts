@@ -17,7 +17,9 @@ async function bootstrap() {
         .setVersion('1.0')
         .addTag('mobilan')
         .build();
-        
+    
+    app.enableShutdownHooks();
+
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('api', app, document);
 

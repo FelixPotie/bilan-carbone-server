@@ -9,10 +9,12 @@ import { TravelModule } from './module/travel.module';
 import { StepModule } from './module/step.module';
 import { AuthModule } from './module/auth.module';
 import { AppSettingModule } from './module/appSetting.module';
+import { TerminusModule } from '@nestjs/terminus';
+import { HealthController } from './controller/health.controller';
 
 @Module({
-    imports: [AdminModule, MobilityModule, TravelModule, StepModule, DatabaseModule, MailModule, AuthModule, AppSettingModule],
+    imports: [AdminModule, MobilityModule, TravelModule, StepModule, DatabaseModule, MailModule, AuthModule, AppSettingModule,TerminusModule],
     providers: [AppService],
-    controllers: [AppController],
+    controllers: [AppController,HealthController],
     })
 export class AppModule { }
