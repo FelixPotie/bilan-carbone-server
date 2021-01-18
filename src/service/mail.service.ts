@@ -10,6 +10,7 @@ export class MailService {
     private readonly logger = new Logger(MailService.name);
 
     public async sendStartEmail(email: string): Promise<void> {
+        console.log("coucou")
         this
             .mailerService
             .sendMail({
@@ -22,7 +23,7 @@ export class MailService {
                 sur la plateforme <b>BilanCarbonePopo</b></p>`, // HTML body content
             })
             .then((success) => {
-                console.log()
+                console.log(success)
             })
             .catch((err) => {
                 console.log(err)
@@ -30,6 +31,7 @@ export class MailService {
     }
 
     public async sendEndEmail(email: string): Promise<void> {
+        console.log("couc")
         this
             .mailerService
             .sendMail({
@@ -42,9 +44,10 @@ export class MailService {
                 sur la plateforme <b>BilanCarbonePopo</b></p>`, // HTML body content
             })
             .then((success) => {
-                console.log()
+                console.log(success)
             })
             .catch((err) => {
+                console.log("la belle erreur")
                 console.log(err)
             });
     }
@@ -57,17 +60,17 @@ export class MailService {
         let nextWeek = new Date()
         nextWeek.setDate(nextWeek.getDate() + 7)
         mobilities.forEach(async mobility => {
-            let startDate = mobility.start_date
-            let endDate = mobility.end_date
-            if (today < startDate && startDate < nextWeek) {
-                let user = mobility.user
-                console.log(user.email)
-                await this.sendStartEmail(user.email)
-            }
-            else if(today < endDate && endDate < nextWeek) {
-                let user = mobility.user
-                console.log(user.email)
-                await this.sendEndEmail(user.email)
+            let startDate = mobility.startDate
+            let endDate = mobility.endDate
+            // if (today < startDate && startDate < nextWeek) {
+            //     let user = mobility.userId+"@etu.umontpellier.fr"
+            //     console.log(user, " commence bientot sa mobilité")
+            //     await this.sendStartEmail(user)
+            // }
+            if(today < endDate && endDate < nextWeek) {
+                let user = mobility.userId+"@etu.umontpellier.fr"
+                console.log(user, " termine bientot sa mobilité")
+                await this.sendEndEmail(user)
             }           
         })
     }

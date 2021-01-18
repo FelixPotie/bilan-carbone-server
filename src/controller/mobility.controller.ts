@@ -45,9 +45,10 @@ export class MobilityController {
         return this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
     }
 
-    @UseGuards(AuthGuard('user'))
+    // @UseGuards(AuthGuard('user'))
     @Post()
     public async addMobility(@Body() mobilityDto: MobilityDto) {
+        console.log("coucou")
         return this.mobilityService.addMobility(mobilityDto);
     }
 

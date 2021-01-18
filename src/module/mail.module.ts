@@ -35,6 +35,6 @@ import { MobilityModule } from './mobility.module';
     MobilityModule
   ],
   controllers: [MailController],
-  exports: [MailService]
+  // exports: [MailService]
 })
 export class MailModule {}
