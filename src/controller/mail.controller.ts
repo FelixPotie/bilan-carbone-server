@@ -7,6 +7,6 @@ export class MailController{
 
     @Get()
     public sendMail() {
-        return this.mailService.send()
+        // return this.mailService.send()
     }
 }

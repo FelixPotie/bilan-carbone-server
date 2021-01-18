@@ -8,5 +8,6 @@ import { Mobility } from '../model/mobility.entity';
     providers: [MobilityService],
     imports: [TypeOrmModule.forFeature([Mobility])],
     controllers: [MobilityController],
+    exports: [MobilityService]
 })
 export class MobilityModule {}

@@ -4,10 +4,13 @@ import { MailerModule } from '@nestjs-modules/mailer';
 // import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailService } from './../service/mail.service';
 import { MailController } from './../controller/mail.controller';
+import { ScheduleModule } from '@nestjs/schedule';
+import { MobilityModule } from './mobility.module';
 
 @Module({
   providers: [MailService],
   imports: [
+    ScheduleModule.forRoot(),
     MailerModule.forRoot({
         transport: {
             host: process.env.EMAIL_HOST,
@@ -29,7 +32,9 @@ import { MailController } from './../controller/mail.controller';
         //     },
         // }
     }),
+    MobilityModule
   ],
   controllers: [MailController],
+  exports: [MailService]
 })
 export class MailModule {}
