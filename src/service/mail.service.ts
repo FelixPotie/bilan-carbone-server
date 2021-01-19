@@ -73,7 +73,7 @@ export class MailService {
         let mobility = await this.mobilityService.getMobility(event.payload.mobilityId)
         if (mobility) {
             console.log("event: ", event.payload.mobilityId, event.payload.travelType)
-            // this.sendConfirmationEmail(mobility.userId + "@etu.umontpellier.fr", event.payload.travelType)
+            this.sendConfirmationEmail(mobility.userId + "@etu.umontpellier.fr", event.payload.travelType)
         }
     }
 

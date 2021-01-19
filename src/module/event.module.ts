@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { MobilityService } from '../service/mobility.service';
-import { MailService } from '../service/mail.service';
 import { TravelService } from '../service/travel.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Mobility } from '../model/mobility.entity';
@@ -30,6 +29,6 @@ import { Travel } from '../model/travel.entity';
     TypeOrmModule.forFeature([Travel])
 ],
     controllers: [],
-    providers: [MailService, MobilityService, TravelService],
+    providers: [ MobilityService, TravelService],
 })
 export class EventModule {}

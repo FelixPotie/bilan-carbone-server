@@ -35,17 +35,17 @@ export class TravelService {
     }
 
     public async addTravel(travelDto: TravelDto) {
-        // const rep = await this.travelRepository.save(travelDto);   
-        // if (rep)
-        this.eventEmitter.emit(
-            'travel',
-            new TravelAddedEvent({
-                mobilityId: travelDto.mobilityId,
-                travelType: travelDto.type
-            }
+        const rep = await this.travelRepository.save(travelDto);
+        if (rep)
+            this.eventEmitter.emit(
+                'travel',
+                new TravelAddedEvent({
+                    mobilityId: travelDto.mobilityId,
+                    travelType: travelDto.type
+                }
+                )
             )
-        )
-        // return rep 
+        return rep
     }
 
     public async updateTravel(id: number, travelDto: TravelDto) {
