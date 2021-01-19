@@ -26,7 +26,7 @@ export class TravelController {
         return await this.travelService.getTravelsByMobilities(id);
     }
 
-    @UseGuards(AuthGuard('user'))
+    // @UseGuards(AuthGuard('user'))
     @Post()
     public async addTravel(@Body() travelDto: TravelDto) {
         return this.travelService.addTravel(travelDto);

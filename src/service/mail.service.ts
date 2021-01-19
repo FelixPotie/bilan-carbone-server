@@ -2,6 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer'
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { MobilityService } from './mobility.service';
+import { OnEvent } from '@nestjs/event-emitter';
+import { TravelAddedEvent } from './travel.service';
 
 @Injectable()
 export class MailService {
@@ -17,10 +19,7 @@ export class MailService {
                     to: email, // List of receivers email address
                     from: process.env.EMAIL_ID, // Senders email address
                     subject: 'Polytech RI: Début de mobilité', // Subject line
-                    text: 'Bonjour, vous allez ou venez de commencer votre mobilité à l\'international. Merci de bien vouloir completer...', // plaintext body
-                    html: `<h3>Votre mobilité à l'international touche à sa fin</h3>
-                <p>Dans le cadre de notre politique DDRS, merci de renseigner ( si ce n'est pas encore le cas) vos trajet 
-                sur la plateforme <b>BilanCarbonePopo</b></p>`, // HTML body content
+                    template: 'startEmail'
                 })
                 .then((success) => {
                     console.log(success)
@@ -38,10 +37,7 @@ export class MailService {
                     to: email, // List of receivers email address
                     from: process.env.EMAIL_ID, // Senders email address
                     subject: 'Polytech RI: fin de mobilité', // Subject line
-                    text: 'Bonjour, votre mobilité à l\'international se termine. Merci de bien vouloir completer...', // plaintext body
-                    html: `<h3>Votre mobilité à l'international touche à sa fin</h3>
-                <p>Dans le cadre de notre politique DDRS, merci de renseigner ( si ce n'est pas encore le cas) vos trajet 
-                sur la plateforme <b>BilanCarbonePopo</b></p>`, // HTML body content
+                    template: 'endEmail'
                 })
                 .then((success) => {
                     console.log(success)
@@ -49,6 +45,36 @@ export class MailService {
                 .catch((err) => {
                     console.log(err)
                 });
+    }
+
+    public async sendConfirmationEmail(email: string, type: string) {
+        let subject: string
+        if (type === "GO") subject = "Confirmation d'enregistrement de votre trajet aller"
+        else if (type === "BACK") subject = "Confirmation d'enregistrement de votre trajet retour"
+        else subject = "confirmation de votre trajet"
+        this
+            .mailerService
+            .sendMail({
+                to: email, // List of receivers email address
+                from: process.env.EMAIL_ID, // Senders email address
+                subject: subject, // Subject line
+                template: 'confirmationEmail'
+            })
+            .then((success) => {
+                console.log(success)
+            })
+            .catch((err) => {
+                console.log(err)
+            });
+    }
+
+    @OnEvent('travel')
+    async handleTravelAddedEvent(event: TravelAddedEvent) {
+        let mobility = await this.mobilityService.getMobility(event.payload.mobilityId)
+        if (mobility) {
+            console.log("event: ", event.payload.mobilityId, event.payload.travelType)
+            // this.sendConfirmationEmail(mobility.userId + "@etu.umontpellier.fr", event.payload.travelType)
+        }
     }
 
     // @Cron(CronExpression.EVERY_WEEK)
