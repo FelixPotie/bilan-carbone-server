@@ -23,6 +23,10 @@ class ConfigService {
         return this.getValue('PORT', true);
     }
 
+    public getIp() {
+        return this.getValue('IP', true);
+    }
+
     public isProduction() {
         const mode = this.getValue('MODE', false);
         return mode != 'DEV';

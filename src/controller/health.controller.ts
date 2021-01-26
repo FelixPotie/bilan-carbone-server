@@ -3,6 +3,7 @@ import { Controller, Get, HttpStatus } from "@nestjs/common";
 import { HealthCheckService, DNSHealthIndicator, HealthCheck, TypeOrmHealthIndicator, MemoryHealthIndicator, DiskHealthIndicator } from "@nestjs/terminus";
 import { Response } from "express";
 import { networkInterfaces } from "os";
+import { configService } from "../config.service";
 
 @Controller('health')
 export class HealthController {
@@ -10,8 +11,8 @@ export class HealthController {
     private health: HealthCheckService,
     private dns: DNSHealthIndicator,
     private orm: TypeOrmHealthIndicator,
-    private memory: MemoryHealthIndicator,
-    private disk: DiskHealthIndicator,
+    //private memory: MemoryHealthIndicator,
+    //private disk: DiskHealthIndicator,
   ) {}
 
   @Get('/server')
@@ -32,19 +33,18 @@ export class HealthController {
   @Get('/app')
   @HealthCheck()
   checkApp() {
-    const ips = this.getIps();
-    console.log(ips);
+    //const ips = this.getIps();
     return this.health.check([
-      () => this.dns.pingCheck('app', 'http://'.concat(ips[0])), //manage addresse prod/test
+      () => this.dns.pingCheck('app', 'http://'.concat(configService.getIp())), //manage addresse prod/test
     ]);
   }
 
   @Get('/portainer')
   @HealthCheck()
   checkPortainer() {
-    const ips = this.getIps();
+    //const ips = this.getIps();
     return this.health.check([
-      () => this.dns.pingCheck('portainer', 'http://'.concat(ips[0],':5016')), //manage addresse prod/test
+      () => this.dns.pingCheck('portainer', 'http://'.concat(configService.getIp(),':5016')), //manage addresse prod/test
     ]);
   }
 
