@@ -33,6 +33,7 @@ export class HealthController {
   @HealthCheck()
   checkApp() {
     const ips = this.getIps();
+    console.log(ips);
     return this.health.check([
       () => this.dns.pingCheck('app', 'http://'.concat(ips[0])), //manage addresse prod/test
     ]);
@@ -75,6 +76,7 @@ export class HealthController {
   /////////////// PRIVATE FUNCTION /////////////////
   private getIps() {
     const netIts = networkInterfaces();
+    console.log(netIts);
     const addrs = Object.values(netIts).reduce((r: string[], list) => r.concat(list.reduce(((rr: string[], i) => { 
       if (i.family==='IPv4' && !i.internal && i.address){
         const addr: string =  i.address;
