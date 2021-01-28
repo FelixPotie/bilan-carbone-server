@@ -1,19 +1,64 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer'
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { MobilityService } from './mobility.service';
+import { OnEvent } from '@nestjs/event-emitter';
+import { TravelAddedEvent } from './travel.service';
 
 @Injectable()
 export class MailService {
-    constructor(private readonly mailerService: MailerService) { }
+    constructor(private readonly mailerService: MailerService,
+        private readonly mobilityService: MobilityService) { }
+    private readonly logger = new Logger(MailService.name);
 
-    public send(): void {
+    public async sendStartEmail(email: string[]): Promise<void> {
+        if (email.length > 0)
+            this
+                .mailerService
+                .sendMail({
+                    to: email, // List of receivers email address
+                    from: process.env.EMAIL_ID, // Senders email address
+                    subject: 'Polytech RI: Début de mobilité', // Subject line
+                    template: 'startEmail'
+                })
+                .then((success) => {
+                    console.log(success)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+    }
+
+    public async sendEndEmail(email: string[]): Promise<void> {
+        if (email.length > 0)
+            this
+                .mailerService
+                .sendMail({
+                    to: email, // List of receivers email address
+                    from: process.env.EMAIL_ID, // Senders email address
+                    subject: 'Polytech RI: fin de mobilité', // Subject line
+                    template: 'endEmail'
+                })
+                .then((success) => {
+                    console.log(success)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+    }
+
+    public async sendConfirmationEmail(email: string, type: string) {
+        let subject: string
+        if (type === "GO") subject = "Confirmation d'enregistrement de votre trajet aller"
+        else if (type === "BACK") subject = "Confirmation d'enregistrement de votre trajet retour"
+        else subject = "confirmation de votre trajet"
         this
             .mailerService
             .sendMail({
-                to: 'bourratmathis@gmail.com', // List of receivers email address
+                to: email, // List of receivers email address
                 from: process.env.EMAIL_ID, // Senders email address
-                subject: 'Testing Nest MailerModule ✔', // Subject line
-                text: 'welcome', // plaintext body
-                html: '<b>welcome</b>', // HTML body content
+                subject: subject, // Subject line
+                template: 'confirmationEmail'
             })
             .then((success) => {
                 console.log(success)
@@ -21,5 +66,37 @@ export class MailService {
             .catch((err) => {
                 console.log(err)
             });
+    }
+
+    @OnEvent('travel')
+    async handleTravelAddedEvent(event: TravelAddedEvent) {
+        let mobility = await this.mobilityService.getMobility(event.payload.mobilityId)
+        if (mobility) {
+            console.log("event: ", event.payload.mobilityId, event.payload.travelType)
+            this.sendConfirmationEmail(mobility.userId + "@etu.umontpellier.fr", event.payload.travelType)
+        }
+    }
+
+    // @Cron(CronExpression.EVERY_WEEK)
+    async verifDate(): Promise<any> {
+        this.logger.log(('mail verif date mobility'))
+        let mobilities = await this.mobilityService.getMobilities()
+        let today = new Date()
+        let nextWeek = new Date()
+        nextWeek.setDate(nextWeek.getDate() + 7)
+        let startEmails: string[] = []
+        let endEmails: string[] = []
+        mobilities.forEach(async mobility => {
+            let startDate = mobility.startDate
+            let endDate = mobility.endDate
+            if (today < startDate && startDate < nextWeek) {
+                startEmails.push(mobility.userId + "@etu.umontpellier.fr")
+            }
+            else if (today < endDate && endDate < nextWeek) {
+                endEmails.push(mobility.userId + "@etu.umontpellier.fr")
+            }
+        })
+        await this.sendStartEmail(startEmails)
+        await this.sendEndEmail(endEmails)
     }
 }

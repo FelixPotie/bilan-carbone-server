@@ -1,3 +1,5 @@
+import { EventModule } from './module/event.module';
+
 import { Module } from '@nestjs/common';
 import { AppController } from './controller/app.controller';
 import { AppService } from './service/app.service';
@@ -13,8 +15,10 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './controller/health.controller';
 
 @Module({
-    imports: [AdminModule, MobilityModule, TravelModule, StepModule, DatabaseModule, MailModule, AuthModule, AppSettingModule,TerminusModule],
+    imports: [
+        EventModule, AdminModule, MobilityModule, TravelModule, StepModule, DatabaseModule, MailModule, AuthModule, AppSettingModule, TerminusModule,
+    ],
     providers: [AppService],
-    controllers: [AppController,HealthController],
-    })
+    controllers: [AppController, HealthController],
+})
 export class AppModule { }

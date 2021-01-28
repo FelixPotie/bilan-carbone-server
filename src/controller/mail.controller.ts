@@ -5,8 +5,8 @@ import { MailService } from './../service/mail.service';
 export class MailController{
     constructor(private mailService: MailService){}
 
-    @Get()
-    public sendMail() {
-        return this.mailService.send()
-    }
+    // @Get()
+    // public sendMail() {
+    //     return this.mailService.sendEndEmail("mathis.bourrat@etu.umontpellier.fr")
+    //     }
 }

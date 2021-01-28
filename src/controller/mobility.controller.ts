@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { MobilityFilterDTO } from '../dto/filter.dto';
 import { Mobility } from '../model/mobility.entity';
 import { MobilityDto } from '../dto/mobility.dto';
