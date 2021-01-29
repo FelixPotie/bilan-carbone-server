@@ -24,6 +24,12 @@ export class MobilityController {
     }
 
     @UseGuards(AuthGuard('admin'))
+    @Get('/admin/all')
+    public async getAllMobilities() {
+        return this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
+    }
+
+    @UseGuards(AuthGuard('admin'))
     @Post('/export/')
     public async getMobilitiesWithFilter(@Body() filters: MobilityFilterDTO) {
         const mobilities: Mobility[] = await this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
@@ -42,7 +48,8 @@ export class MobilityController {
 
     @Get()
     public async getMobilitiesForStatistics() {
-        return this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
+        this.mobilityService.getMobilitiesWithOutUserId().then(result => console.log(result));
+        return this.mobilityService.getMobilitiesWithOutUserId();
     }
 
     @UseGuards(AuthGuard('user'))
