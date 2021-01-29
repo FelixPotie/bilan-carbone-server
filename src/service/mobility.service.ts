@@ -35,6 +35,28 @@ export class MobilityService {
         .getMany();
     }
 
+    public async getMobilitiesWithOutUserId() {
+        return await this.mobilityRepository.createQueryBuilder("mobilities")
+            .leftJoinAndSelect("mobilities.travels", "travels")
+            .leftJoinAndSelect("travels.steps", "steps")
+            .leftJoinAndSelect("mobilities.departmentType", "departmentType")
+            .getMany()
+            .then(mobilities => {
+                return mobilities.map((mobility: Mobility) => {
+                    return (
+                        {
+                            departmentTypeName: mobility.departmentTypeName,
+                            type: mobility.type,
+                            year: mobility.year,
+                            startDate: mobility.startDate,
+                            endDate: mobility.endDate,
+                            travels: mobility.travels,
+                            departmentType: mobility.departmentType
+                        })
+                })
+        });
+    }
+
     public async addMobility(mobilityDto: MobilityDto) {
         return await this.mobilityRepository.save(mobilityDto);
     }
