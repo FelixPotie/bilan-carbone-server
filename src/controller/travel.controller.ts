@@ -43,5 +43,4 @@ export class TravelController {
     public async removeTravel(@Param('id') id: number) {
         return this.travelService.removeTravel(id);
     }
-
 }

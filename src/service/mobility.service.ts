@@ -15,7 +15,7 @@ export class MobilityService {
     }
 
     public async getMobility(id: number) {
-        return await this.mobilityRepository.findOne({ id: id });
+        return await this.mobilityRepository.findOne( id, {relations: ['travels']});
     }
 
     public async getMobilitiesByUserId(user_id: string) {
