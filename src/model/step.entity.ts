@@ -1,6 +1,15 @@
-import { PrimaryGeneratedColumn, Column, Entity, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { Travel } from './travel.entity';
 
+export enum TransportType {
+    TGV = "TGV",
+    PLANE = "PLANE",
+    CAR = "CAR",
+    ELECTRIC_CAR = "ELECTRIC_CAR",
+    TER = "TER",
+    MOTO = "MOTO", 
+    BUS = "BUS"
+}
 @Entity('steps')
 export class Step {
     @PrimaryGeneratedColumn()
@@ -25,10 +34,19 @@ export class Step {
     @Column()
     distance: number;
 
-    @Column({length: 100})
-    meansOfTransport: string;
+    @Column({
+        type:'enum',
+        enum: TransportType
+    })
+    meansOfTransport: TransportType;
 
     @Column()
     carboneEmission: number;
+
+    @Column({type: 'float8'})
+    latitude: number;
+
+    @Column({type: 'float8'})
+    longitude: number;
 
 }
