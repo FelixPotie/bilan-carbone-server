@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { Travel, TravelType } from '../model/travel.entity';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { MobilityService } from './mobility.service';
+import { TravelTypeNotAvailableException } from '../exception/travel-type-not-available.exception';
+import { throws } from 'assert';
 
 export class TravelAddedEvent {
     payload: { mobilityId: number; travelType: string; };
@@ -40,32 +42,43 @@ export class TravelService {
      * 
      * @param travelDto travel type cannot be duplicate for one mobility
      * 
+     * @returns Pormise<Travel>
+     * @throws TravelTypeNotAvailableException 
      */
-    public async addTravel(travelDto: TravelDto) {       
-        return this.isTravelTypeAvailableProm(travelDto.mobilityId,travelDto.type).then(isTravelTypeAvailable => {
+    public async addTravel(travelDto: TravelDto) {   
+        return this.mobilityService.getMobility(travelDto.mobilityId).then(mobility => {
+            return this.isTravelTypeAvailable(mobility.travels,travelDto.type)
+        }).then(async isTravelTypeAvailable => {
             if(isTravelTypeAvailable){
-                return this.travelRepository.save(travelDto).then(rep => {
-                    if (rep)
-                        this.eventEmitter.emit(
-                            'travel',
-                            new TravelAddedEvent({
-                                mobilityId: travelDto.mobilityId,
-                                travelType: travelDto.type
-                            }
-                            )
-                        )
-                    return rep
-                })
+                const rep = await this.travelRepository.save(travelDto);
+                if (rep)
+                    this.eventEmitter.emit(
+                        'travel',
+                        new TravelAddedEvent({
+                            mobilityId: travelDto.mobilityId,
+                            travelType: travelDto.type
+                        }
+                        ) 
+                    );
+                return rep;
             } else {
-                throw new Error('travelTypeNotAvailable');
+                throw new TravelTypeNotAvailableException();
             }
         })
-
-        
     }
 
     public async updateTravel(id: number, travelDto: TravelDto) {
-        return await this.travelRepository.update(id, travelDto);
+        return this.mobilityService.getMobility(travelDto.mobilityId).then(mobility => {
+            const travelExceptThisOne = mobility.travels.filter(travel => travel.id !== id);
+            return this.isTravelTypeAvailable(travelExceptThisOne,travelDto.type)
+        }).then(async isTravelTypeAvailable => {
+            if(isTravelTypeAvailable){
+                return this.travelRepository.update(id, travelDto);
+            } else {
+                throw new TravelTypeNotAvailableException();
+            }
+        })
+        
     }
 
     public async removeTravel(id: number) {
@@ -74,12 +87,9 @@ export class TravelService {
 
     /////////////////////////// private methode ///////////////////////////////////
 
-    private async isTravelTypeAvailableProm(mobilityId: number, travelType: TravelType) {
-        return this.mobilityService.getMobility(mobilityId)
-        .then(mobility => {
-            return !(mobility.travels.map(travel => {
-                return travel.type
-            }).includes(travelType));
-        })
+    private  isTravelTypeAvailable(travels: Travel[], travelType: TravelType) { 
+        return !(travels.map(travel => {
+            return travel.type
+        }).includes(travelType));
     }
 }

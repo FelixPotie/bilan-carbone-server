@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseFilters, UseGuards } from '@nestjs/common';
 import { TravelService } from '../service/travel.service';
 import { TravelDto } from '../dto/travel.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { TravelTypeNotAvailableErrorFilter } from '../filter/travel-type-error.filter';
 
-
+@UseFilters(new TravelTypeNotAvailableErrorFilter())
 @Controller('travel')
 export class TravelController {
     constructor(private travelService: TravelService) { }
@@ -29,7 +30,7 @@ export class TravelController {
     @UseGuards(AuthGuard('user'))
     @Post()
     public async addTravel(@Body() travelDto: TravelDto) {
-        return this.travelService.addTravel(travelDto);
+        return await this.travelService.addTravel(travelDto);
     }
 
     @UseGuards(AuthGuard('user'))
