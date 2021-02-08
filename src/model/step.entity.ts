@@ -44,9 +44,15 @@ export class Step {
     carboneEmission: number;
 
     @Column({type: 'float8'})
-    latitude: number;
+    latDeparture: number;
 
     @Column({type: 'float8'})
-    longitude: number;
+    longDeparture: number;
+
+    @Column({type: 'float8'})
+    latArrival: number;
+
+    @Column({type: 'float8'})
+    longArrival: number;
 
 }

@@ -42,10 +42,20 @@ export class StepDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsNumber()
-    latitude: number;
+    latDeparture: number;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsNumber()
-    longitude: number;
+    longDeparture: number;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
+    latArrival: number;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
+    longArrival: number;
 }
