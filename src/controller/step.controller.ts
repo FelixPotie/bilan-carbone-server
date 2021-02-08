@@ -8,18 +8,6 @@ import { AuthGuard } from '@nestjs/passport';
 export class StepController {
     constructor(private stepService: StepService) { }
 
-    //to delete
-    @UseGuards(AuthGuard('user'))
-    @Get()
-    public async getSteps() {
-        return await this.stepService.getSteps();
-    }
-    //to delete
-    @UseGuards(AuthGuard('user'))
-    @Get(':id')
-    public async getStep(@Param('id') id: number) {
-        return await this.stepService.getStep(id);
-    }
 //vérifier que c'est sont trajet 
     @UseGuards(AuthGuard('user'))
     @Get('/travel/:id')

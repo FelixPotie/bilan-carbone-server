@@ -14,19 +14,6 @@ export class TravelController {
         private mobilityService: MobilityService,
         private jwtCustomService: JwtCustomService) { }
 
-    //to delete
-    @UseGuards(AuthGuard('user')) 
-    @Get()
-    public async getTravels() {
-        return await this.travelService.getTravels();
-    }
-    //to delete
-    @UseGuards(AuthGuard('user'))
-    @Get(':id')
-    public async getTravel(@Param('id') id: number) {
-        return await this.travelService.getTravel(id);
-    }
-
     @UseGuards(AuthGuard('user'))
     @Get('/mobility/:id')
     public async getTravelsByMobilities(@Param('id') id: number, @Headers('authorization') authToken : string) {
