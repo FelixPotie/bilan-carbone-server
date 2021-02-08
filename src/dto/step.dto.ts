@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { TransportType } from '../model/step.entity';
 
 export class StepDto {
 
@@ -30,11 +31,21 @@ export class StepDto {
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsString()
-    meansOfTransport: string;
+    @IsEnum(TransportType)
+    meansOfTransport: TransportType;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsNumber()
     carboneEmission: number;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
+    latitude: number;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
+    longitude: number;
 }

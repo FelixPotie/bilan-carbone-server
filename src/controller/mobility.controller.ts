@@ -1,26 +1,40 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Headers, UnauthorizedException, ForbiddenException } from '@nestjs/common';
 import { MobilityFilterDTO } from '../dto/filter.dto';
 import { Mobility } from '../model/mobility.entity';
 import { MobilityDto } from '../dto/mobility.dto';
 import { MobilityService } from '../service/mobility.service';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtCustomService } from '../auth/jwtCustom.service';
 
 
 @Controller('mobility')
 export class MobilityController {
-    constructor(private mobilityService: MobilityService) { }
+    constructor(private mobilityService: MobilityService,
+        private jwtCustomService: JwtCustomService) { }
 
     @UseGuards(AuthGuard('user'))
     @Get(':id')
-    public async getMobility(@Param('id') id: number) {
-        return await this.mobilityService.getMobility(id);
+    public async getMobility(@Param('id') id: number, @Headers('authorization') authToken : string) {
+        const username = this.jwtCustomService.getUserName(authToken); 
+        const mobility =  await this.mobilityService.getMobility(id);
+        if (mobility.userId !== username) {
+            throw new ForbiddenException("id do not correspond to your"); 
+        } else {
+            return mobility
+        }
+      
     }
 
     @UseGuards(AuthGuard('user'))
     @Get('/user/:id')
-    public async getMobilitiesByUserId(@Param('id') id: string) {
-        const mobilities: Mobility[] = await this.mobilityService.getMobilitiesByUserId(id);
-        return mobilities;
+    public async getMobilitiesByUserId(@Param('id') id: string, @Headers('authorization') authToken : string) {
+        const username = this.jwtCustomService.getUserName(authToken);
+        if (username === id){
+            return await this.mobilityService.getMobilitiesByUserId(id);
+        } else {
+            throw new ForbiddenException("id do not correspond to your");
+        }
+        
     }
 
     @UseGuards(AuthGuard('admin'))
@@ -54,20 +68,37 @@ export class MobilityController {
 
     @UseGuards(AuthGuard('user'))
     @Post()
-    public async addMobility(@Body() mobilityDto: MobilityDto) {
-        return this.mobilityService.addMobility(mobilityDto);
+    public async addMobility(@Body() mobilityDto: MobilityDto, @Headers('authorization') authToken : string) {
+        const username = this.jwtCustomService.getUserName(authToken); 
+        if (mobilityDto.userId !== username) {
+            throw new ForbiddenException("id do not correspond to your"); 
+        } else {
+            return this.mobilityService.addMobility(mobilityDto);
+        }
     }
 
     @UseGuards(AuthGuard('user'))
     @Put(':id')
-    public async updateMobility(@Param('id') id: number, @Body() mobilityDto: MobilityDto) {
-        return this.mobilityService.updateMobility(id, mobilityDto);
+    public async updateMobility(@Param('id') id: number, @Body() mobilityDto: MobilityDto, @Headers('authorization') authToken : string) {
+        const username = this.jwtCustomService.getUserName(authToken);
+        const mobilityInUpdate = await this.mobilityService.getMobilityByUser(id, username);
+        if (typeof mobilityInUpdate === 'undefined' || mobilityDto.userId !== username) {
+            throw new ForbiddenException("id do not correspond to one of your mobility"); 
+        } else {
+            return this.mobilityService.updateMobility(id, mobilityDto);
+        }
     }
 
     @UseGuards(AuthGuard('user'))
     @Delete(':id')
-    public async removeMobility(@Param('id') id: number) {
-        return this.mobilityService.removeMobility(id);
+    public async removeMobility(@Param('id') id: number, @Headers('authorization') authToken : string) {
+        const username = this.jwtCustomService.getUserName(authToken); 
+        const mobility =  await this.mobilityService.getMobility(id);
+        if (mobility.userId !== username) {
+            throw new ForbiddenException("id do not correspond to your"); 
+        } else {
+            return this.mobilityService.removeMobility(id);
+        }
     }
 
 }
