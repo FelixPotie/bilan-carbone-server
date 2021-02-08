@@ -30,8 +30,12 @@ export class TravelService {
         return await this.travelRepository.find({ relations: ["mobility"] });
     }
 
-    public async getTravel(id: number) {
-        return await this.travelRepository.findOne({ id: id });
+    public async getTravel(id: number, username: string) {
+        return await this.travelRepository.createQueryBuilder("travels")
+        .leftJoinAndSelect("mobilities", "m", "m.id = travels.mobilityId")
+        .where("m.userId = :userId", { userId: username})
+        .andWhere("travels.id = :travelId", {travelId: id})
+        .getOne()
     }
 
     public async getTravelsByMobilities(mobilityId: number) {

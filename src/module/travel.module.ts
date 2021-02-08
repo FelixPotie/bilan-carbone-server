@@ -11,5 +11,6 @@ import { JwtCustomService } from '../auth/jwtCustom.service';
     providers: [TravelService, MobilityService, JwtCustomService],
     imports: [TypeOrmModule.forFeature([Travel]), TypeOrmModule.forFeature([Mobility])],
     controllers: [TravelController],
+    exports: [TravelService]
 })
 export class TravelModule {}
