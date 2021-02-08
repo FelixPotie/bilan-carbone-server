@@ -31,7 +31,7 @@ export class Step {
     @Column({length: 255})
     arrival: string;
 
-    @Column()
+    @Column({type: 'float8'})
     distance: number;
 
     @Column({
