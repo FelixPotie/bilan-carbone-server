@@ -13,12 +13,14 @@ import { AuthModule } from './module/auth.module';
 import { AppSettingModule } from './module/appSetting.module';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './controller/health.controller';
+import { JwtCustomService } from './auth/jwtCustom.service';
 
 @Module({
     imports: [
         EventModule, AdminModule, MobilityModule, TravelModule, StepModule, DatabaseModule, MailModule, AuthModule, AppSettingModule, TerminusModule,
     ],
-    providers: [AppService],
+    providers: [AppService,JwtCustomService],
     controllers: [AppController, HealthController],
+    exports:[JwtCustomService]
 })
 export class AppModule { }

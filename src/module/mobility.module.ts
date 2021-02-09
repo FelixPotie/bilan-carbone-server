@@ -3,9 +3,10 @@ import { MobilityService } from '../service/mobility.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MobilityController } from '../controller/mobility.controller';
 import { Mobility } from '../model/mobility.entity';
+import { JwtCustomService } from '../auth/jwtCustom.service';
 
 @Module({
-    providers: [MobilityService],
+    providers: [MobilityService,JwtCustomService],
     imports: [TypeOrmModule.forFeature([Mobility])],
     controllers: [MobilityController],
     exports: [MobilityService]

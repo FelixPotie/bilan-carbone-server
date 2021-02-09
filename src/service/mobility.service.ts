@@ -15,7 +15,7 @@ export class MobilityService {
     }
 
     public async getMobility(id: number) {
-        return await this.mobilityRepository.findOne({ id: id });
+        return await this.mobilityRepository.findOne( id, {relations: ['travels']});
     }
 
     public async getMobilitiesByUserId(user_id: string) {
@@ -67,5 +67,32 @@ export class MobilityService {
 
     public async removeMobility(id: number) {
         return await this.mobilityRepository.delete(id);
+    }
+
+    public async isUserOwnMobility(id: number, username: string) {
+        return this.mobilityRepository.findOne( id, {where: {userId: username}}).then(mobility => {
+            return !(typeof mobility === 'undefined')
+        });
+    }
+
+    public async isUserOwnTravel(id: number, travelId: number, username: string) {
+        this.getMobilityByUser(id, username).then()
+    }
+    public async getMobilityByUser(id: number, username: string) {
+        return await this.mobilityRepository.createQueryBuilder("mobilities")
+        .where("mobilities.userId = :userId", { userId: username})
+        .andWhere("mobilities.id = :id", { id: id})  
+        .leftJoinAndSelect("mobilities.travels", "travels")
+        .leftJoinAndSelect("travels.steps", "steps")
+        .getOne();
+    }
+
+    public async getMobilityByTravelIdAndUser(travelId: number, username: string) {
+        console.log(username);
+        return await this.mobilityRepository.createQueryBuilder("mobilities")
+        .leftJoinAndSelect("mobilities.travels", "travels")
+        .where("mobilities.userId = :userId", { userId: username})
+        .andWhere("travels.id = :travelId", { travelId: travelId})
+        .getOne();
     }
 }
