@@ -13,10 +13,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     public async validate(username: string, password: string) {
       const admin = await this.authService.validateAdmin(username, password);
       if (!admin) {
-        this.logger.warn('admin : '+username+' connection failed');
+        this.logger.warn('validate : admin'+username+' connection failed');
         throw new UnauthorizedException();
       }
-      this.logger.log('admin : '+username+' connection succeeded');
+      this.logger.log('validate : admin'+username+' connection succeeded');
       return admin;
     }
   }

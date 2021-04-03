@@ -6,7 +6,6 @@ import { MobilityDto } from '../dto/mobility.dto';
 
 @Injectable()
 export class MobilityService {
-    private readonly logger = new Logger(MobilityService.name);
     constructor(
         @InjectRepository(Mobility) private readonly mobilityRepository: Repository<Mobility>,
     ) { }

@@ -13,10 +13,10 @@ export class AuthUserStrategy extends PassportStrategy(Strategy, 'auth-user') {
     public async validate(username: string, password: string) {
         const user = await this.authService.validateUser(username, password);
         if (!user) {
-            this.logger.warn('user : '+username+' connection failed');
+            this.logger.warn('validate : user'+username+' connection failed');
             throw new UnauthorizedException();
         }
-        this.logger.log('user : '+username+' connection succeeded');
+        this.logger.log('validate : user'+username+' connection succeeded');
         return user;
     }
 }

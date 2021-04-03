@@ -20,10 +20,10 @@ export class MobilityController {
         const username = this.jwtCustomService.getUserName(authToken); 
         const mobility =  await this.mobilityService.getMobility(id);
         if (mobility.userId !== username) {
-            this.logger.error('user : '+username+' try to get the mobility '+id+' of '+ mobility.userId);
+            this.logger.error('getMobility : user '+username+' try to get the mobility '+id+' of '+ mobility.userId);
             throw new ForbiddenException("id do not correspond to you"); 
         } else {
-            this.logger.log('user : '+username+' try to get his mobility '+id);
+            this.logger.log('getMobility : user '+username+' try to get his mobility '+id);
             return mobility
         }
       
@@ -34,10 +34,10 @@ export class MobilityController {
     public async getMobilitiesByUserId(@Param('id') id: string, @Headers('authorization') authToken : string) {
         const username = this.jwtCustomService.getUserName(authToken);
         if (username === id){
-            this.logger.log('user : '+username+' try to get his mobilities');
+            this.logger.log('getMobilitiesByUserId : user '+username+' try to get his mobilities');
             return await this.mobilityService.getMobilitiesByUserId(id);
         } else {
-            this.logger.error('user : '+username+' try to get the mobilities of '+ id);
+            this.logger.error('getMobilitiesByUserId : user '+username+' try to get the mobilities of '+ id);
             throw new ForbiddenException("id do not correspond to you");
         }
         
@@ -54,10 +54,10 @@ export class MobilityController {
     public async addMobility(@Body() mobilityDto: MobilityDto, @Headers('authorization') authToken : string) {
         const username = this.jwtCustomService.getUserName(authToken); 
         if (mobilityDto.userId !== username) {
-            this.logger.error('user : '+username+' try to add a mobility to '+ mobilityDto.userId);
+            this.logger.error('addMobility : user '+username+' try to add a mobility to '+ mobilityDto.userId);
             throw new ForbiddenException("id do not correspond to you"); 
         } else {
-            this.logger.log('user : '+username+' try to add a mobility');
+            this.logger.log('addMobility : user '+username+' try to add a mobility');
             return this.mobilityService.addMobility(mobilityDto);
         }
     }
@@ -68,10 +68,10 @@ export class MobilityController {
         const username = this.jwtCustomService.getUserName(authToken);
         const mobilityInUpdate = await this.mobilityService.getMobilityByUser(id, username);
         if (typeof mobilityInUpdate === 'undefined' || mobilityDto.userId !== username) {
-            this.logger.error('user : '+username+' try to update the mobility '+id+ ' of '+mobilityDto.userId);
+            this.logger.error('updateMobility : user '+username+' try to update the mobility '+id+ ' of '+mobilityDto.userId);
             throw new ForbiddenException("id do not correspond to one of your mobility"); 
         } else {
-            this.logger.log('user : '+username+' try to update the mobility '+id);
+            this.logger.log('updateMobility : user '+username+' try to update the mobility '+id);
             return this.mobilityService.updateMobility(id, mobilityDto);
         }
     }
@@ -82,10 +82,10 @@ export class MobilityController {
         const username = this.jwtCustomService.getUserName(authToken); 
         const mobility =  await this.mobilityService.getMobility(id);
         if (mobility.userId !== username) {
-            this.logger.error('user : '+username+' try to delete the mobility '+id+' of '+ mobility.userId);
+            this.logger.error('removeMobility : user '+username+' try to delete the mobility '+id+' of '+ mobility.userId);
             throw new ForbiddenException("id do not correspond to you"); 
         } else {
-            this.logger.log('user : '+username+' try to delete the mobility '+id);
+            this.logger.log('removeMobility : user '+username+' try to delete the mobility '+id);
             return this.mobilityService.removeMobility(id);
         }
     }
@@ -95,14 +95,14 @@ export class MobilityController {
     @UseGuards(AuthGuard('admin'))
     @Get('/admin/all')
     public async getAllMobilities() {
-        this.logger.log('an admin try to collect all the admins');
+        this.logger.log('getAllMobilities : an admin try to collect all the mobilities');
         return this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
     }
 
     @UseGuards(AuthGuard('admin'))
     @Post('/export/')
     public async getMobilitiesWithFilter(@Body() filters: MobilityFilterDTO) {
-        this.logger.log('an admin try to export the data');
+        this.logger.log('getMobilitiesWithFilter : an admin try to export the data');
         const mobilities: Mobility[] = await this.mobilityService.getMobilitiesWithTravelsStepsDepartment();
         const filteredMobilities = mobilities.filter(mobility => {
             const startDate = new Date(filters.startDate);
