@@ -22,10 +22,12 @@ export class MailService {
                     template: 'startEmail'
                 })
                 .then((success) => {
-                    console.log(success)
+                    this.logger.log('sendStartEmail : Mail sent to '+email);
+                    this.logger.log(success)
                 })
                 .catch((err) => {
-                    console.log(err)
+                    this.logger.error('sendStartEmail : Mail failed to send to '+email);
+                    this.logger.error(err)
                 });
     }
 
@@ -40,10 +42,12 @@ export class MailService {
                     template: 'endEmail'
                 })
                 .then((success) => {
-                    console.log(success)
+                    this.logger.log('sendEndEmail : Mail sent to '+email);
+                    this.logger.log(success)
                 })
                 .catch((err) => {
-                    console.log(err)
+                    this.logger.error('sendEndEmail : Mail failed to send to '+email);
+                    this.logger.error(err)
                 });
     }
 
@@ -61,10 +65,12 @@ export class MailService {
                 template: 'confirmationEmail'
             })
             .then((success) => {
-                console.log(success)
+                this.logger.log('sendConfirmationEmail : Mail sent to '+email);
+                this.logger.log(success)
             })
             .catch((err) => {
-                console.log(err)
+                this.logger.error('sendConfirmationEmail : Mail failed to send to '+email);
+                this.logger.error(err)
             });
     }
 
@@ -72,14 +78,14 @@ export class MailService {
     async handleTravelAddedEvent(event: TravelAddedEvent) {
         let mobility = await this.mobilityService.getMobility(event.payload.mobilityId)
         if (mobility) {
-            console.log("event: ", event.payload.mobilityId, event.payload.travelType)
+            this.logger.log("handleTravelAddedEvent : event: "+ event.payload.mobilityId + event.payload.travelType)
             this.sendConfirmationEmail(mobility.userId + "@etu.umontpellier.fr", event.payload.travelType)
         }
     }
 
     // @Cron(CronExpression.EVERY_WEEK)
     async verifDate(): Promise<any> {
-        this.logger.log(('mail verif date mobility'))
+        this.logger.log(('verifDate : mail verif date mobility'))
         let mobilities = await this.mobilityService.getMobilities()
         let today = new Date()
         let nextWeek = new Date()
