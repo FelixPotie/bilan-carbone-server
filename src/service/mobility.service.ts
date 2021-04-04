@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Mobility } from '../model/mobility.entity';
@@ -88,7 +88,6 @@ export class MobilityService {
     }
 
     public async getMobilityByTravelIdAndUser(travelId: number, username: string) {
-        console.log(username);
         return await this.mobilityRepository.createQueryBuilder("mobilities")
         .leftJoinAndSelect("mobilities.travels", "travels")
         .where("mobilities.userId = :userId", { userId: username})

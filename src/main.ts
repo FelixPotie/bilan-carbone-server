@@ -6,7 +6,9 @@ import { ValidationPipe } from '@nestjs/common/pipes/validation.pipe';
 import { QueryFailedErrorFilter } from './filter/query-failed-error.filter';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, {
+        logger: ['log','error', 'warn'],
+      });
     app.enableCors();
     app.useGlobalPipes(new ValidationPipe({
         transform: true
