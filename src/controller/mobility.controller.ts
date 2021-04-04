@@ -45,7 +45,6 @@ export class MobilityController {
 
     @Get()
     public async getMobilitiesForStatistics() {
-        this.mobilityService.getMobilitiesWithOutUserId().then(result => console.log(result));
         return this.mobilityService.getMobilitiesWithOutUserId();
     }
 
