@@ -7,6 +7,6 @@ export class MailController{
 
     // @Get()
     // public sendMail() {
-    //     return this.mailService.sendEndEmail("mathis.bourrat@etu.umontpellier.fr")
+    //     return this.mailService.testEmail()
     //     }
 }

@@ -138,7 +138,7 @@ export class AuthService {
         return ret
     }
 
-    public async searchUser(sAMAccountName: string){
+    private async searchUser(sAMAccountName: string){
         let ldapClient = ldap.createClient({
             url: process.env.LDAP_URL,
             bindDN: process.env.SERVICE_ACCOUNT_USERNAME,
