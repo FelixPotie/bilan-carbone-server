@@ -22,10 +22,10 @@ export class AuthService {
         }
         return null;
     }
-
+    
     public async validateUser(username: string, password: string) {
-
-        const bind: any = await this.handleBind({
+        
+        let bind: any = await this.handleBind({
             username: username,
             password: password
         });
@@ -44,14 +44,36 @@ export class AuthService {
                 };
             }
         }
-        return null;
+        // polytech identifier != firstname.lastname 
+        // find better solution
+        else {
+            let user: any = await this.searchUser(username)
+            if (user.user){
+                user = user.user
+                console.log(user)
+                let bind: any = await this.handleBind({
+                    username: user.userPrincipalName.split("@")[0],
+                    password: password
+                })
+                if (bind.success === true) {
+                    return {
+                        username: user.cn,
+                        department: user.department,
+                        mail: user.mail, 
+                        departmentNumber: user.departmentNumber
+                    }
+                }
+                
+            }
+            return null;
+        }
     }
 
-    private handleBind(req: any) {
+    private async handleBind(req: any) {
         let ldapClient = ldap.createClient({
             url: process.env.LDAP_URL
         });
-        return new Promise((resolve) => {
+         let bind: any = await new Promise((resolve) => {
             ldapClient.bind(`${req.username}@isim.intra`, req.password, (err) => {
                 if (err) {
                     return resolve({
@@ -63,9 +85,13 @@ export class AuthService {
                 })
             })
         });
+        if (bind.success) ldapClient.unbind()
+        ldapClient.destroy()
+        return bind
+
     }
 
-    private handleSearch(req: any) {
+    private async handleSearch(req: any) {
         let ldapClient = ldap.createClient({
             url: process.env.LDAP_URL,
             bindDN: `${req.username}@isim.intra`,
@@ -78,7 +104,7 @@ export class AuthService {
             attributes: ["cn", 'department', 'departmentNumber', 'mail']
         };
 
-        return new Promise((resolve) => {
+        let ret = await new Promise((resolve) => {
             ldapClient.search(' OU=Etudiants, OU=Comptes,DC=isim, DC=intra', opts, (err, res) => {
                 if (err) {
                     return resolve({
@@ -107,8 +133,57 @@ export class AuthService {
                 }
             })
         })
+
+        ldapClient.destroy()
+        return ret
     }
 
+    private async searchUser(sAMAccountName: string){
+        let ldapClient = ldap.createClient({
+            url: process.env.LDAP_URL,
+            bindDN: process.env.SERVICE_ACCOUNT_USERNAME,
+            bindCredentials: process.env.SERVICE_ACCOUNT_PASSWORD
+        })
+
+        const opts: ldap.SearchOptions = {
+            filter: `(sAMAccountName=${sAMAccountName})`,
+            scope: 'sub',
+            attributes: ["cn", 'department', 'departmentNumber', 'mail', 'userPrincipalName']
+        };
+        
+        const ret = await new Promise((resolve) => {
+            ldapClient.search(' OU=Etudiants, OU=Comptes,DC=isim, DC=intra', opts, (err, res) => {
+                if (err) {
+                    return resolve({
+                        user: null,
+                        msg: `error on connection : ${err}`
+                    })
+                } else {
+                    res.on('searchEntry', function (entry) {
+                        return resolve({
+                            user: entry.object,
+                            msg: "ok"
+                        })
+                    });
+                    res.on('error', function (err) {
+                        return resolve({
+                            user: null,
+                            msg: `error on search : ${err}`
+                        })
+                    });
+                    res.on('end', function (result) {
+                        return resolve({
+                            user: null,
+                            msg: `function ended : ${result}`
+                        })
+                    });
+                }
+            })
+        })
+        ldapClient.destroy()
+        return ret
+    }
+    
 
 
     // Login function

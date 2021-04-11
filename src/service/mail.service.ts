@@ -19,8 +19,8 @@ export class MailService {
                     to: email, // List of receivers email address
                     from: process.env.EMAIL_ID, // Senders email address
                     subject: 'Polytech RI: Début de mobilité', // Subject line
-                    template: 'startEmail'
-                })
+                    template: 'startEmail',
+                }) 
                 .then((success) => {
                     this.logger.log('sendStartEmail : Mail sent to '+email);
                     this.logger.log(success)
@@ -39,7 +39,10 @@ export class MailService {
                     to: email, // List of receivers email address
                     from: process.env.EMAIL_ID, // Senders email address
                     subject: 'Polytech RI: fin de mobilité', // Subject line
-                    template: 'endEmail'
+                    template: 'endEmail',
+                    context:{
+
+                    }
                 })
                 .then((success) => {
                     this.logger.log('sendEndEmail : Mail sent to '+email);
@@ -51,18 +54,37 @@ export class MailService {
                 });
     }
 
-    public async sendConfirmationEmail(email: string, type: string) {
-        let subject: string
-        if (type === "GO") subject = "Confirmation d'enregistrement de votre trajet aller"
-        else if (type === "BACK") subject = "Confirmation d'enregistrement de votre trajet retour"
-        else subject = "confirmation de votre trajet"
+    public async sendConfirmationEmail(userId: string, type: string, place: string) {
+        let subject, travelType, template: string
+        if (type === "GO") {
+            subject = "Confirmation d'enregistrement trajet aller "
+            travelType = "aller"
+            template = "confirmationEmailGo"
+        }
+        else if 
+        (type === "BACK") {
+            subject = "Confirmation d'enregistrement de votre trajet retour"
+            travelType = "retour"
+            template = "confirmationEmailBack"
+        }
+        else {
+            subject = "confirmation de votre trajet"
+            travelType = ""
+            template = "confirmationEmailGo"
+        }
         this
             .mailerService
             .sendMail({
-                to: email, // List of receivers email address
+                to: `${userId}@etu.umontpellier.fr`, // List of receivers email address
                 from: process.env.EMAIL_ID, // Senders email address
                 subject: subject, // Subject line
-                template: 'confirmationEmail'
+                template: template,
+                context: {
+                    travelType: travelType,
+                    firstName: userId.split(".")[0],
+                    lastName: userId.split(".")[1],
+                    place: place
+                }
             })
             .then((success) => {
                 this.logger.log('sendConfirmationEmail : Mail sent to '+email);
@@ -78,8 +100,8 @@ export class MailService {
     async handleTravelAddedEvent(event: TravelAddedEvent) {
         let mobility = await this.mobilityService.getMobility(event.payload.mobilityId)
         if (mobility) {
-            this.logger.log("handleTravelAddedEvent : event: "+ event.payload.mobilityId + event.payload.travelType)
-            this.sendConfirmationEmail(mobility.userId + "@etu.umontpellier.fr", event.payload.travelType)
+            console.log("event: ", event.payload.mobilityId, event.payload.travelType)
+            this.sendConfirmationEmail(mobility.userId, event.payload.travelType, mobility.place)
         }
     }
 
@@ -105,4 +127,25 @@ export class MailService {
         await this.sendStartEmail(startEmails)
         await this.sendEndEmail(endEmails)
     }
+
+
+    // public async testEmail(){
+    //     this
+    //         .mailerService
+    //         .sendMail({
+    //             to: "mathis25360@gmail.com", // List of receivers email address
+    //             from: process.env.EMAIL_ID, // Senders email address
+    //             subject: "test template", // Subject line
+    //             template: 'confirmationEmail',
+    //             context: {
+    //                 username: 'mathis'
+    //             }
+    //         })
+    //         .then((success) => {
+    //             console.log(success)
+    //         })
+    //         .catch((err) => {
+    //             console.log(err)
+    //         });
+    // }
 }
