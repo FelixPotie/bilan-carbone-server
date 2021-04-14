@@ -4,6 +4,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { MobilityService } from './mobility.service';
 import { OnEvent } from '@nestjs/event-emitter';
 import { TravelAddedEvent } from './travel.service';
+import { ETIMEDOUT } from 'constants';
 
 @Injectable()
 export class MailService {
@@ -87,11 +88,11 @@ export class MailService {
                 }
             })
             .then((success) => {
-                this.logger.log('sendConfirmationEmail : Mail sent to '+email);
+                this.logger.log('sendConfirmationEmail : Mail sent to '+userId+'@etu.umontpellier.fr');
                 this.logger.log(success)
             })
             .catch((err) => {
-                this.logger.error('sendConfirmationEmail : Mail failed to send to '+email);
+                this.logger.error('sendConfirmationEmail : Mail failed to send to '+userId+'@etu.umontpellier.fr');
                 this.logger.error(err)
             });
     }
