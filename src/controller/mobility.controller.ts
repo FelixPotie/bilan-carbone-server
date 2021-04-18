@@ -1,18 +1,32 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards, Headers, UnauthorizedException, ForbiddenException, Logger } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+    UseGuards,
+    Headers,
+    ForbiddenException,
+    Logger, LoggerService, Inject
+} from '@nestjs/common';
 import { MobilityFilterDTO } from '../dto/filter.dto';
 import { Mobility } from '../model/mobility.entity';
 import { MobilityDto } from '../dto/mobility.dto';
 import { MobilityService } from '../service/mobility.service';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtCustomService } from '../auth/jwtCustom.service';
-
+import {WINSTON_MODULE_NEST_PROVIDER, } from "nest-winston";
 
 @Controller('mobility')
 export class MobilityController {
-    private readonly logger = new Logger(MobilityController.name);
-    
+
+    private logger: LoggerService = new Logger(MobilityController.name);
+
     constructor(private mobilityService: MobilityService,
-        private jwtCustomService: JwtCustomService) { }
+        private jwtCustomService: JwtCustomService,
+                @Inject(WINSTON_MODULE_NEST_PROVIDER) logger: LoggerService) { }
 
     @UseGuards(AuthGuard('user'))
     @Get(':id')
@@ -56,7 +70,8 @@ export class MobilityController {
             this.logger.error('addMobility : user '+username+' try to add a mobility to '+ mobilityDto.userId);
             throw new ForbiddenException("id do not correspond to you"); 
         } else {
-            this.logger.log('addMobility : user '+username+' try to add a mobility');
+            this.logger.log('addMobility : user '+username+' try to add a mobility to '+ mobilityDto.userId);
+            throw new Error();
             return this.mobilityService.addMobility(mobilityDto);
         }
     }
