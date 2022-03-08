@@ -7,8 +7,9 @@ export enum TransportType {
     CAR = "CAR",
     ELECTRIC_CAR = "ELECTRIC_CAR",
     TER = "TER",
-    MOTO = "MOTO", 
-    BUS = "BUS"
+    MOTO = "MOTO",
+    BUS = "BUS",
+    FERRY_PEOPLE = "FERRY_PEOPLE"
 }
 @Entity('steps')
 export class Step {
@@ -16,7 +17,7 @@ export class Step {
     id: number;
 
     @Column()
-    travelId: number; 
+    travelId: number;
 
     @ManyToOne(() => Travel, travel => travel.steps, {onDelete: 'CASCADE', nullable: false})
     @JoinColumn()
