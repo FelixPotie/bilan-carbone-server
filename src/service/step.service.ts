@@ -1,9 +1,9 @@
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { StepDto } from '../dto/step.dto';
-import { Repository } from 'typeorm';
-import { Step } from '../model/step.entity';
-import { TravelService } from './travel.service';
+import {ForbiddenException, Injectable, Logger} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {StepDto} from '../dto/step.dto';
+import {Repository} from 'typeorm';
+import {Step, TransportType} from '../model/step.entity';
+import {TravelService} from './travel.service';
 
 @Injectable()
 export class StepService {
@@ -74,6 +74,34 @@ export class StepService {
         } else {
             return await this.stepRepository.delete(id);
         }
-        
+
+    }
+
+    public async migrateStep() {
+        const steps = await this.stepRepository.find()
+        let cnt = 0;
+        for (const step1 of steps.filter(step => step.meansOfTransport === TransportType.PLANE && step.id > 1700)) {
+            console.log("step1 : ")
+            console.log(step1)
+            let stepUpdated = step1;
+            if(step1.distance <= 1000) {
+                const carboneEmission =  Math.trunc(step1.carboneEmission * (126/230))
+                stepUpdated = {...step1, carboneEmission}
+            } else if(step1.distance <= 2000 && step1.distance > 1000) {
+                const carboneEmission =  Math.trunc(step1.carboneEmission * (102/186))
+                stepUpdated = {...step1, carboneEmission}
+            } else if(step1.distance <= 3500 && step1.distance > 2000) {
+                const carboneEmission =  Math.trunc(step1.carboneEmission * (97.4/178))
+                stepUpdated = {...step1, carboneEmission}
+            } else if(step1.distance > 3500) {
+                const carboneEmission = Math.trunc(step1.carboneEmission * (82.8/151))
+                stepUpdated = {...step1, carboneEmission}
+            } else {
+                throw Error("distance incorrect for" + step1)
+            }
+            cnt = cnt + 1;
+            await this.stepRepository.update(stepUpdated.id, stepUpdated)
+        }
+        console.log(cnt + "step migrated");
     }
 }
