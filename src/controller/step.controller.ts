@@ -12,12 +12,6 @@ export class StepController {
         private stepService: StepService,
         private jwtCustomService: JwtCustomService) { }
 
-    @Get('/migrate')
-    public async migrate(): Promise<void> {
-        await this.stepService.migrateStep();
-
-    }
-
     @UseGuards(AuthGuard('user'))
     @Get('/travel/:id')
     public async getStepsByTravel(@Param('id') id: number,  @Headers('authorization') authToken : string) {
@@ -25,7 +19,7 @@ export class StepController {
         this.logger.log('getStepsByTravel : user '+username+' try to get the step : '+id);
         return await this.stepService.getStepsByTravel(id, username);
     }
-
+ 
     @UseGuards(AuthGuard('user'))
     @Post()
     public async addStep(@Body() stepDto: StepDto,  @Headers('authorization') authToken : string) {
